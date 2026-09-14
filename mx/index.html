@@ -14,7 +14,7 @@
       --border: rgba(0, 0, 0, 0.08);
       --accent-blue: #0071e3;
       --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
-      --spring-easing: cubic-bezier(0.16, 1, 0.3, 1);
+      --apple-ease: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
@@ -29,10 +29,6 @@
       color: var(--text);
       font-family: var(--font);
       overflow-x: hidden;
-    }
-
-    body.modal-open {
-      overflow: hidden;
     }
 
     a {
@@ -52,7 +48,7 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      animation: navFadeDown 0.6s var(--spring-easing) forwards;
+      animation: navFadeDown 0.6s var(--apple-ease) forwards;
     }
 
     .global-nav-content {
@@ -106,7 +102,7 @@
       top: 44px;
       z-index: 999;
       height: 52px;
-      animation: navFadeDown 0.7s var(--spring-easing) forwards;
+      animation: navFadeDown 0.7s var(--apple-ease) forwards;
     }
 
     .newsroom-header-wrap {
@@ -142,7 +138,7 @@
       color: #000;
     }
 
-    /* Buscador con animación de expansión */
+    /* Buscador */
     .search-pill {
       display: flex;
       align-items: center;
@@ -154,7 +150,7 @@
       font-size: 13px;
       color: var(--muted);
       cursor: text;
-      transition: all 0.35s var(--spring-easing);
+      transition: all 0.35s var(--apple-ease);
     }
 
     .search-pill svg {
@@ -170,7 +166,7 @@
       font-size: 13px;
       color: var(--text);
       width: 140px;
-      transition: width 0.35s var(--spring-easing);
+      transition: width 0.35s var(--apple-ease);
     }
 
     .search-pill:focus-within {
@@ -188,19 +184,7 @@
       stroke: var(--accent-blue);
     }
 
-    /* ---------- CONTENEDOR PRINCIPAL ---------- */
-    .page-container {
-      transition: filter 0.5s var(--spring-easing), transform 0.5s var(--spring-easing), opacity 0.5s var(--spring-easing);
-      will-change: filter, transform;
-    }
-
-    body.modal-open .page-container {
-      filter: blur(24px) brightness(0.96);
-      transform: scale(0.985);
-      pointer-events: none;
-      user-select: none;
-    }
-
+    /* ---------- CONTENIDO PRINCIPAL ---------- */
     .main-wrap {
       max-width: 1024px;
       margin: 0 auto;
@@ -239,7 +223,7 @@
       font-size: 14px;
       color: var(--muted);
       margin-top: auto;
-      padding-top: 20px;
+      padding-top: 18px;
     }
 
     .meta-time svg {
@@ -252,7 +236,7 @@
     .scroll-anim {
       opacity: 0;
       transform: translateY(28px) scale(0.99);
-      transition: opacity 0.75s var(--spring-easing), transform 0.75s var(--spring-easing);
+      transition: opacity 0.75s var(--apple-ease), transform 0.75s var(--apple-ease);
       will-change: opacity, transform;
     }
 
@@ -262,7 +246,7 @@
     }
 
     .hover-card {
-      transition: transform 0.35s var(--spring-easing), box-shadow 0.35s var(--spring-easing);
+      transition: transform 0.35s var(--apple-ease), box-shadow 0.35s var(--apple-ease);
     }
 
     .hover-card:hover {
@@ -270,33 +254,34 @@
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
     }
 
-    .hover-card img {
-      transition: transform 0.5s var(--spring-easing);
-    }
-
-    .hover-card:hover img {
-      transform: scale(1.02);
-    }
-
-    /* ---------- TARJETA HERO (DISPARADOR DE CÁPSULA) ---------- */
+    /* =========================================================
+       TARJETA HERO CON COMPRESIÓN IN-SITU Y EXPANSIÓN A CÁPSULA
+       ========================================================= */
     .hero-card {
       background: var(--card-bg);
       border-radius: 24px;
       overflow: hidden;
-      display: grid;
-      grid-template-columns: 1.15fr 1fr;
-      align-items: center;
-      margin-bottom: 28px;
-      cursor: pointer;
+      margin-bottom: 36px;
       position: relative;
-      transition: transform 0.4s var(--spring-easing), border-radius 0.4s var(--spring-easing);
+      cursor: pointer;
+      transition: border-radius 0.6s var(--apple-ease),
+                  box-shadow 0.6s var(--apple-ease),
+                  background-color 0.4s ease;
+    }
+
+    /* Disposición inicial horizontal de dos columnas */
+    .hero-layout {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      width: 100%;
+      transition: flex-direction 0.6s var(--apple-ease);
     }
 
     .hero-media {
-      width: 100%;
-      height: 100%;
+      flex: 1.15;
       overflow: hidden;
-      transition: transform 0.4s var(--spring-easing);
+      transition: all 0.6s var(--apple-ease);
     }
 
     .hero-media img {
@@ -304,14 +289,17 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.6s var(--apple-ease);
     }
 
+    /* Bloque de texto inicial a la derecha */
     .hero-info {
+      flex: 1;
       padding: 48px 44px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      transition: transform 0.4s var(--spring-easing), opacity 0.3s ease;
+      transition: all 0.6s var(--apple-ease);
     }
 
     .hero-info .headline {
@@ -321,17 +309,168 @@
       letter-spacing: -0.015em;
       color: var(--text);
       margin-bottom: 24px;
+      transition: all 0.6s var(--apple-ease);
     }
 
-    /* Estado cuando se pulsa: comprime derecha hacia la izquierda */
-    .hero-card.compressing {
-      transform: scale(0.97);
-      border-radius: 36px;
-    }
-
-    .hero-card.compressing .hero-info {
-      transform: translateX(-40px);
+    /* Botón de cierre dentro de la cápsula (oculto por defecto) */
+    .hero-collapse-btn {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(220, 220, 225, 0.8);
+      backdrop-filter: blur(12px);
+      border: none;
+      color: #1d1d1f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 20;
       opacity: 0;
+      pointer-events: none;
+      transform: scale(0.8);
+      transition: opacity 0.35s var(--apple-ease), transform 0.35s var(--apple-ease), background 0.2s ease;
+    }
+
+    .hero-collapse-btn:hover {
+      background: rgba(205, 205, 210, 0.95);
+      transform: scale(1.05);
+    }
+
+    /* Contenedor colapsable del artículo completo del PDF */
+    .hero-expanded-content {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      padding: 0 44px;
+      transition: max-height 0.85s var(--apple-ease),
+                  opacity 0.6s var(--apple-ease),
+                  padding 0.6s var(--apple-ease);
+    }
+
+    /* ---------- ESTADO EXPANDIDO EN CÁPSULA (IN-SITU) ---------- */
+    .hero-card.is-expanded {
+      cursor: default;
+      border-radius: 36px;
+      background: #ffffff;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    }
+
+    .hero-card.is-expanded:hover {
+      transform: none; /* No flotar en hover cuando está abierta */
+    }
+
+    .hero-card.is-expanded .hero-collapse-btn {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    /* La parte derecha se mueve hacia la izquierda y se coloca abajo */
+    .hero-card.is-expanded .hero-layout {
+      flex-direction: column;
+    }
+
+    .hero-card.is-expanded .hero-media {
+      margin: 18px 18px 0;
+      border-radius: 28px;
+      max-height: 480px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .hero-card.is-expanded .hero-info {
+      padding: 36px 44px 12px;
+      width: 100%;
+    }
+
+    .hero-card.is-expanded .hero-info .headline {
+      font-size: 38px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .hero-card.is-expanded .hero-expanded-content {
+      max-height: 7000px;
+      opacity: 1;
+      padding: 0 44px 50px;
+    }
+
+    /* Tipografía del artículo dentro de la cápsula (PDF) */
+    .expanded-subheadline {
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.32;
+      color: #48484a;
+      margin-bottom: 18px;
+    }
+
+    .expanded-lead {
+      font-size: 19px;
+      line-height: 1.48;
+      font-weight: 500;
+      color: var(--text);
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 34px;
+    }
+
+    .expanded-body {
+      font-size: 17px;
+      line-height: 1.62;
+      color: #333336;
+      max-width: 820px;
+    }
+
+    .expanded-body p {
+      margin-bottom: 22px;
+    }
+
+    .expanded-body h2 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--text);
+      margin: 44px 0 16px;
+    }
+
+    .article-footnotes {
+      margin-top: 54px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .article-footnotes ol {
+      padding-left: 18px;
+    }
+
+    .article-footnotes li {
+      margin-bottom: 10px;
+    }
+
+    .press-contacts {
+      margin-top: 40px;
+      padding: 24px 28px;
+      background: var(--card-bg);
+      border-radius: 20px;
+    }
+
+    .press-contacts h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .press-contacts p {
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #515154;
     }
 
     /* Grilla de 2 columnas */
@@ -502,207 +641,11 @@
       color: var(--muted);
     }
 
-    /* =========================================================
-       FONDO DIFUMINADO Y CÁPSULA EXPANDIDA
-       ========================================================= */
-    .capsule-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      background: rgba(0, 0, 0, 0.32);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.45s var(--spring-easing);
-    }
-
-    .capsule-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .capsule-modal {
-      width: 100%;
-      max-width: 860px;
-      max-height: 92vh;
-      background: #ffffff;
-      border-radius: 36px;
-      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(0, 0, 0, 0.04);
-      overflow-y: auto;
-      overflow-x: hidden;
-      position: relative;
-      transform: scale(0.92) translateY(24px);
-      opacity: 0;
-      transition: transform 0.5s var(--spring-easing), opacity 0.4s ease;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .capsule-overlay.active .capsule-modal {
-      transform: scale(1) translateY(0);
-      opacity: 1;
-    }
-
-    /* Botón flotante para cerrar */
-    .modal-close-btn {
-      position: sticky;
-      top: 20px;
-      margin-left: auto;
-      margin-right: 20px;
-      margin-top: 16px;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(220, 220, 224, 0.75);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: none;
-      color: #1d1d1f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 20;
-      transition: transform 0.2s ease, background 0.2s ease;
-    }
-
-    .modal-close-btn:hover {
-      transform: scale(1.08);
-      background: rgba(200, 200, 205, 0.95);
-    }
-
-    /* Imagen superior en cápsula */
-    .capsule-media {
-      margin: 0 24px 32px;
-      border-radius: 28px;
-      overflow: hidden;
-      background: var(--card-bg);
-      max-height: 520px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-    }
-
-    .capsule-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* Contenido textual exacto del PDF */
-    .capsule-article-content {
-      padding: 0 44px 70px;
-    }
-
-    .capsule-article-content .eyebrow {
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .capsule-article-content .capsule-title {
-      font-size: 40px;
-      font-weight: 700;
-      line-height: 1.12;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      margin-bottom: 16px;
-    }
-
-    .capsule-article-content .capsule-time {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 28px;
-    }
-
-    .capsule-article-content .capsule-time svg {
-      width: 15px;
-      height: 15px;
-      fill: currentColor;
-    }
-
-    .capsule-article-content .capsule-subheadline {
-      font-size: 22px;
-      font-weight: 600;
-      line-height: 1.3;
-      color: #48484a;
-      margin-bottom: 18px;
-    }
-
-    .capsule-article-content .capsule-lead {
-      font-size: 19px;
-      line-height: 1.45;
-      font-weight: 500;
-      color: var(--text);
-      padding-bottom: 28px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 32px;
-    }
-
-    .capsule-body {
-      font-size: 17px;
-      line-height: 1.6;
-      color: #333336;
-    }
-
-    .capsule-body p {
-      margin-bottom: 22px;
-    }
-
-    .capsule-body h2 {
-      font-size: 27px;
-      font-weight: 700;
-      letter-spacing: -0.015em;
-      color: var(--text);
-      margin: 44px 0 16px;
-    }
-
-    .article-footnotes {
-      margin-top: 56px;
-      padding-top: 32px;
-      border-top: 1px solid var(--border);
-      font-size: 12px;
-      line-height: 1.55;
-      color: var(--muted);
-    }
-
-    .article-footnotes ol {
-      padding-left: 18px;
-    }
-
-    .article-footnotes li {
-      margin-bottom: 10px;
-    }
-
-    .press-contacts {
-      margin-top: 40px;
-      padding: 24px 28px;
-      background: var(--card-bg);
-      border-radius: 20px;
-    }
-
-    .press-contacts h3 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .press-contacts p {
-      font-size: 14px;
-      margin-bottom: 6px;
-      color: #515154;
-    }
-
     /* Buscador vista de resultados */
     #searchView {
       display: none;
       padding: 10px 0 60px;
-      animation: searchViewIn 0.4s var(--spring-easing) forwards;
+      animation: searchViewIn 0.4s var(--apple-ease) forwards;
     }
 
     body.searching #mainContent { display: none; }
@@ -742,7 +685,7 @@
       background: var(--card-bg);
       opacity: 0;
       transform: translateY(14px);
-      animation: resultPop 0.45s var(--spring-easing) forwards;
+      animation: resultPop 0.45s var(--apple-ease) forwards;
     }
 
     .search-thumb {
@@ -797,17 +740,18 @@
       .grid-3 { grid-template-columns: 1fr; }
       .grid-2 { grid-template-columns: 1fr; }
       .more-news-row { grid-template-columns: 1fr; gap: 28px; padding: 24px 0; }
-      .capsule-article-content { padding: 0 24px 50px; }
-      .capsule-article-content .capsule-title { font-size: 30px; }
-      .capsule-media { margin: 0 16px 24px; }
+      .hero-layout { flex-direction: column; }
+      .hero-info { padding: 32px 24px; }
+      .hero-card.is-expanded .hero-info { padding: 24px 20px 8px; }
+      .hero-card.is-expanded .hero-expanded-content { padding: 0 20px 40px; }
+      .hero-card.is-expanded .hero-media { margin: 12px 12px 0; }
+      .hero-info .headline { font-size: 26px; }
+      .hero-card.is-expanded .hero-info .headline { font-size: 28px; }
     }
 
     @media (max-width: 860px) {
       .global-nav { display: none; }
       .newsroom-nav .nav-link { display: none; }
-      .hero-card { grid-template-columns: 1fr; }
-      .hero-info { padding: 32px 24px; }
-      .hero-info .headline { font-size: 26px; }
       .section-heading { font-size: 32px; }
       .sub-heading { font-size: 26px; margin: 48px 0 16px; }
       .more-news-item .item-thumb { width: 96px; height: 96px; border-radius: 16px; }
@@ -874,25 +818,34 @@
     </div>
   </header>
 
-  <!-- Contenedor Principal (con efecto de difuminado al abrir la cápsula) -->
-  <div class="page-container">
-    <main class="main-wrap">
+  <!-- Contenedor Principal (Permanece en su lugar y sin difuminar) -->
+  <main class="main-wrap">
 
-      <!-- Vista de Resultados del Buscador -->
-      <div id="searchView">
-        <div class="typewriter-box">
-          <span id="typewriterTarget"></span>
-          <span class="typewriter-cursor"></span>
-        </div>
-        <div id="searchResults" class="search-results-grid"></div>
+    <!-- Vista de Resultados del Buscador -->
+    <div id="searchView">
+      <div class="typewriter-box">
+        <span id="typewriterTarget"></span>
+        <span class="typewriter-cursor"></span>
       </div>
+      <div id="searchResults" class="search-results-grid"></div>
+    </div>
 
-      <!-- Contenido Normal de la Página -->
-      <div id="mainContent">
-        <h1 class="section-heading scroll-anim">Últimas noticias</h1>
+    <!-- Contenido Normal de la Página -->
+    <div id="mainContent">
+      <h1 class="section-heading scroll-anim">Últimas noticias</h1>
 
-        <!-- Tarjeta Hero que se comprime y abre en cápsula -->
-        <article class="hero-card hover-card scroll-anim" id="heroTrigger" title="Haz clic para descubrir los nuevos productos">
+      <!-- TARJETA HERO: SE COMPRIME Y EXPANDE IN-SITU A CÁPSULA -->
+      <article class="hero-card hover-card scroll-anim" id="heroCard">
+        <!-- Botón para cerrar/colapsar -->
+        <button id="heroCollapseBtn" class="hero-collapse-btn" aria-label="Colapsar artículo" title="Cerrar noticia">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="3" x2="13" y2="13"/>
+            <line x1="13" y1="3" x2="3" y2="13"/>
+          </svg>
+        </button>
+
+        <!-- Cabecera de la tarjeta: de horizontal a vertical cápsula -->
+        <div class="hero-layout" id="heroLayout">
           <div class="hero-media">
             <img src="https://www.apple.com/newsroom/images/2026/09/get-ready-to-experience-iphone-18-pro-the-new-apple-watch-lineup-and-airpods-5/tile/Apple-iPhone-18-Pro-lineup-Apple-Watch-Series-12-Apple-Watch-Ultra-4-Airpods-5-lp.jpg.landing-big_2x.jpg" alt="iPhone 18 Pro, Apple Watch y AirPods">
           </div>
@@ -904,266 +857,237 @@
               <span>Hace 2 h 26 min</span>
             </div>
           </div>
+        </div>
+
+        <!-- Contenido extendido que aparece abajo al expandirse in-situ -->
+        <div class="hero-expanded-content" id="heroExpandedContent">
+          <div class="expanded-subheadline">
+            La preventa del iPhone 18 Pro y el iPhone 18 Pro Max comienza el sábado, 12 de septiembre
+          </div>
+
+          <div class="expanded-lead">
+            Pronto los clientes podrán comprar en preventa los nuevos modelos de iPhone 18 Pro, la nueva generación de Apple Watch, los AirPods 5 y nuevos accesorios.
+          </div>
+
+          <!-- Cuerpo completo del artículo extraído del PDF -->
+          <div class="expanded-body">
+            <p>Llegó la hora del iPhone Pro. A partir del sábado, 12 de septiembre, a las 5 a.m. (PT), los clientes podrán comprar en preventa el iPhone 18 Pro y el iPhone 18 Pro Max en apple.com/mx y en la app Apple Store.</p>
+
+            <p>El iPhone 18 Pro y el iPhone 18 Pro Max cuentan con increíbles avances en la cámara, el rendimiento, la batería y la inteligencia. La nueva cámara Fusion principal de 48 MP con apertura variable te da un control creativo como nunca antes, y los nuevos controles Pro te permiten personalizar tu experiencia en la app Cámara para acceder fácilmente a los ajustes que más usas. Los dos modelos cuentan con la potencia del A20 Pro y una cámara de vapor de última generación para alcanzar un rendimiento continuo superior, mientras que los diseños renovados de la batería aprovechan la eficiencia del potente chip para ofrecer una duración increíble. Gracias a iOS 27, la nueva generación de Apple Intelligence y Siri AI, una versión completamente nueva de Siri, los modelos de iPhone 18 Pro incorporan poderosas capacidades de IA junto con el contexto personal para convertirse en un centro personal inteligente, con la privacidad y la seguridad en su esencia.<sup>1</sup></p>
+
+            <p>Tanto si compran online como en tiendas, los clientes pueden conectarse con Especialistas de Apple para recibir asesoramiento personalizado y elegir el dispositivo perfecto para ellos. También pueden obtener información sobre cómo proteger sus productos con el AppleCare+ o el AppleCare One, así como recibir ayuda para ahorrar y pagar, incluyendo opciones de leasing (disponible en Estados Unidos) y financiamiento y ofertas de los operadores. Los clientes pueden aprovechar el servicio de entrega a domicilio o programar el retiro en el Apple Store más cercano y en el horario que mejor les convenga.</p>
+
+            <p>Los modelos de Apple Watch Series 12, Apple Watch Ultra 4, AirPods 5, Mac mini y Mac Studio ya pueden comprarse en preventa en apple.com/mx y en la app Apple Store. Junto con el iPhone 18 Pro y el iPhone 18 Pro Max, el Apple Watch y los AirPods 5 estarán disponibles en tiendas y online en todo el mundo a partir del viernes, 18 de septiembre. La Mac mini y la Mac Studio estarán disponibles en tiendas a partir del martes, 22 de septiembre.</p>
+
+            <h2>Ahorra directamente con Apple</h2>
+            <p>Con tantas opciones de pago, cambiarse a un nuevo dispositivo Apple nunca fue tan fácil. Los clientes pueden aprovechar las opciones de leasing (disponible en Estados Unidos) y financiamiento, además de las ofertas excepcionales de los operadores. Y como el iPhone mantiene su valor por más tiempo que otros smartphones, obtienen un valor aún mayor con Apple Trade In.<sup>2</sup> Apple Trade In es una de las mejores opciones para ahorrar en los últimos modelos de iPhone. En Estados Unidos, al canjear un iPhone 13 o modelo posterior, los clientes pueden obtener desde $175 (USD) hasta $885 (USD) de crédito al instante. Para obtener más información sobre Apple Trade In en tu país, visita apple.com/mx/shop/trade-in.</p>
+
+            <h2>Explora los productos</h2>
+            <p>El iPhone 18 Pro y el iPhone 18 Pro Max cuentan con la cámara más avanzada de Apple hasta ahora, con grandes mejoras en batería y rendimiento. La nueva cámara Fusion principal de 48 MP con apertura variable se ajusta automáticamente a la profundidad de campo y la iluminación, mientras que los Estilos Fotográficos mejorados ahora permiten controlar la textura y grano de las fotos, para dar rienda suelta a la creatividad. Los controles Pro permiten a los usuarios personalizar su experiencia en la app Cámara, y los efectos de Cine pueden agregarse después de grabar en videos de hasta 60 fps. Los diseños renovados de la batería aprovechan la eficiencia del potente chip para ofrecer una duración de batería increíble, y el iPhone 18 Pro Max brinda el mayor salto en batería en un iPhone hasta ahora. Además, la cámara de vapor de última generación permite aprovechar al máximo el rendimiento del A20 Pro, una superpotencia para las cargas de trabajo de IA en el dispositivo. El iPhone 18 Pro y el iPhone 18 Pro Max incorporan la nueva generación de Apple Intelligence y Siri AI, un asistente mucho más personal, capaz y conversacional que estará disponible en versión beta con iOS 27. Gracias a la comprensión del contexto personal, un amplio conocimiento del mundo y el reconocimiento de contenido en pantalla, podrá ayudar a los usuarios a encontrar lo que necesitan en el momento y hacer de todo durante el día.<sup>4</sup></p>
+
+            <p>iOS 27 incorpora una gran cantidad de mejoras que hacen que el iPhone sea más preciso, confiable y fácil de usar. Ambos modelos estarán disponibles en negro, color plata, color glaciar y el nuevo color borgoña.</p>
+
+            <p>El Apple Watch Series 12 y el Apple Watch Ultra 4 están diseñados con el nuevo sistema de registro de datos de salud y el nuevo chip S11 para ofrecer la medición de frecuencia cardiaca más precisa en un dispositivo wearable, así como mediciones de frecuencia cardiaca y variabilidad de la frecuencia cardiaca (VFC) de mayor frecuencia, y avanzadas funcionalidades de salud y fitness, como una nueva puntuación de disposición que ofrece a los usuarios información sobre su capacidad para enfrentar el día que les espera. El Apple Watch Series 12 ofrece hasta 24 horas de batería para uso diario y, gracias a una carga más rápida, hasta 12 horas de batería adicional con sólo 15 minutos de carga. El Apple Watch Ultra 4 es el compañero perfecto para el deporte y la aventura, y ofrece hasta 45 horas de registro de entrenamiento al aire libre y más de dos días (hasta 50 horas) de batería para uso diario. Siri AI llega al Apple Watch Series 12 y al Apple Watch Ultra 4 con watchOS 27.<sup>1</sup> El Apple Watch Series 12 está disponible en opciones de aluminio color bronce oscuro, negro, color oro claro y gris espacial, además de titanio color oro radiante y titanio natural, y una nueva y elegante versión de cerámica en blanco perla y azul noche.</p>
+
+            <p>Los AirPods 5 ofrecen la mejor Cancelación Activa de Ruido (ANC) de la industria en un diseño abierto y una calidad de sonido aún mejor, a un precio sorprendente. Los AirPods 5 traen una nueva arquitectura acústica multipuerto y Ecualización Adaptativa de última generación para disfrutar un sonido aún más envolvente. Su revolucionaria Cancelación Activa de Ruido en este tipo de diseño elimina hasta un 50% más de ruido externo que los AirPods 4 con Cancelación Activa de Ruido y ofrece un modo Ambiente más natural. Los AirPods 5 con Estuche de Carga Inalámbrica tienen mayor duración de batería y un sensor de fuerza con control de volumen, por primera vez en este diseño abierto, que permite ajustar el volumen deslizando hacia arriba o hacia abajo en la parte inferior de los audífonos. Al combinar los AirPods con Siri AI y el iPhone, los usuarios pueden obtener respuestas a partir de información basada en su contexto personal y un amplio conocimiento del mundo, todo sin usar las manos. También pueden responder a Siri con gestos de la cabeza o usar Traducción en Vivo para comunicarse en otros idiomas.</p>
+
+            <p>La nueva Mac mini con los nuevos M6 y M5 Pro ofrece un increíble salto en rendimiento y aún más versatilidad, en un diseño de escritorio supercompacto. Con el M6, la Mac mini ofrece un rendimiento de IA hasta 4 veces más rápido, almacenamiento 2 veces más rápido, gráficos más veloces y un rendimiento del CPU un 40% más rápido que la generación anterior. Por su parte, la Mac mini con M5 Pro ofrece un rendimiento aún más profesional para volar por los proyectos más exigentes, como la producción de videos o el desarrollo de juegos. Este nuevo nivel de rendimiento resuelve los flujos de trabajo profesionales con facilidad, tanto si la Mac mini se usa como una computadora de escritorio principal o como computación agéntica siempre activa de forma local.</p>
+
+            <p>La nueva Mac Studio con el M5 Max y el nuevo M5 Ultra representa un salto enorme en el rendimiento de la IA y ofrece gráficos aún más rápidos para enfrentar los flujos de trabajo profesionales más exigentes, todo en el diseño compacto y característico para el escritorio de los usuarios. La Mac Studio ayuda a creativos, desarrolladores, investigadores de IA, científicos de datos y muchos profesionales más a desafiar los límites de lo que pueden hacer, y ahora ofrece un rendimiento de IA hasta 4.3 veces más veloz,<sup>10</sup> un almacenamiento hasta el doble de rápido,<sup>11</sup> gráficos hasta 1.8 veces más veloces,<sup>10</sup> un rendimiento del CPU hasta 1.3 veces más rápido y un mayor ancho de banda de memoria. También ofrece hasta 512 GB de memoria unificada,<sup>12</sup> hasta 1.2 TB/s de ancho de banda de memoria unificada y una amplia conectividad, incluidos los puertos Thunderbolt 5. La Mac mini y la Mac Studio también vienen con Wi-Fi 7 y Bluetooth 6. Junto con la potencia de macOS 27 y la última generación de Apple Intelligence, con Siri AI integrado, cualquiera de los dos modelos representa un gran avance.</p>
+
+            <h2>Prepárate para cambiar tu modelo con Apple</h2>
+            <p>La forma más rápida de reservar tu iPhone 18 Pro y iPhone 18 Pro Max es preparándote hoy mismo. Los clientes tienen hasta el viernes, 11 de septiembre, a las 9 a.m. (PT) para seleccionar su modelo, elegir los accesorios, obtener la aprobación previa del leasing (disponible en Estados Unidos) o financiamiento y realizar su canje con tranquilidad. Al guardar la bolsa de compras, estarán a un clic de distancia cuando comiencen las preventas el sábado, 12 de septiembre a las 5 a.m. (PT).</p>
+
+            <p>Los clientes obtienen lo mejor de Apple cuando compran directamente online o en la tienda. Nuestro equipo de Especialistas puede ayudarlos de principio a fin con todo lo que necesitan saber, desde descubrir las últimas opciones de canje y formas de ahorrar hasta la transferencia segura de sus datos con la Configuración Personalizada. Los clientes también pueden descubrir cómo aprovechar aún más sus nuevos dispositivos en las sesiones gratuitas de Today at Apple. Con ofertas actualizadas como "Dile hola al iPhone 18 Pro" y "Consejos: Novedades de iOS 27", estas clases prácticas son la manera perfecta de explorar las capacidades de los últimos productos.</p>
+
+            <h2>Agrega un toque personal</h2>
+            <p>Los modelos de iPhone 18 Pro y iPhone 18 Pro Max se pueden combinar con una variedad de fundas de silicón, fundas de TechWoven, correas cruzadas y carteras de FineWoven, todas diseñadas para complementar los cuatro increíbles acabados. La funda transparente tiene un diseño renovado y ahora se puede acoplar a la correa cruzada o a la nueva correa de muñeca, que permite llevar el iPhone, los AirPods Pro 2 o los AirPods Pro 3 convenientemente sin usar las manos. Está fabricada con hilo de poliéster 100% reciclado e incorpora imanes flexibles para un ajuste perfecto. Estará disponible en seis colores: negro, visón, oliva, azul nítido, magenta y borgoña.</p>
+
+            <h2>Prueba Apple One</h2>
+            <p>Las nuevas suscripciones y las suscripciones reactivadas que cumplan con los requisitos obtienen tres meses gratis de Apple One con la compra de un iPhone 18 Pro o un iPhone 18 Pro Max. Apple One agrupa hasta seis servicios de Apple en un solo plan para varios dispositivos Apple: Apple TV, Apple Music, hasta 2 TB de almacenamiento en iCloud+ y más.<sup>13</sup></p>
+
+            <!-- Notas al pie -->
+            <div class="article-footnotes">
+              <ol>
+                <li>Apple Intelligence está disponible con Siri y el idioma del dispositivo configurados en chino (simplificado), chino (tradicional), danés, neerlandés, inglés, francés, alemán, italiano, japonés, coreano, noruego, portugués, español, sueco, turco o vietnamita. Siri AI estará disponible inicialmente en versión beta en iOS 27, macOS 27, iPadOS 27 y watchOS 27.</li>
+                <li>El valor de canje varía según la condición, el año y la configuración del dispositivo elegible. Más información en apple.com/mx/tradein.</li>
+                <li>Los nuevos controles de textura y grano en Estilos Fotográficos estarán disponibles en iOS 27.</li>
+                <li>Siri AI no estará disponible en iOS, iPadOS ni watchOS en la Unión Europea al momento del lanzamiento.</li>
+                <li>Según los datos de un estudio realizado por Apple en julio y agosto de 2026 sobre la precisión de la frecuencia cardiaca.</li>
+                <li>Pruebas realizadas por Apple en julio de 2026 con unidades AirPods 5 enlazadas con un iPhone 17.</li>
+                <li>La duración de la batería varía según el uso. Más información en apple.com/mx/batteries.</li>
+                <li>Resultados obtenidos en comparación con sistemas Mac mini de generaciones anteriores con M4.</li>
+                <li>Pruebas realizadas por Apple en julio de 2026. Para más información, visita apple.com/mx/mac-mini.</li>
+                <li>Pruebas realizadas por Apple en julio de 2026. Para más información, visita apple.com/mx/mac-studio.</li>
+                <li>Resultados comparados con la Mac Studio anterior con M3 Ultra.</li>
+                <li>La Mac Studio con 512 GB de memoria unificada estará disponible a finales de octubre.</li>
+                <li>Oferta disponible en algunos países y regiones con un nuevo dispositivo elegible a partir del 17 de septiembre.</li>
+              </ol>
+            </div>
+
+            <!-- Contactos de prensa -->
+            <div class="press-contacts">
+              <h3>Contactos de prensa</h3>
+              <p><strong>Mauricio Valdespino Amaya</strong> · Apple</p>
+              <p>m_valdespinoamaya@apple.com · +52-55-10376546</p>
+              <p><strong>Apple Media Helpline</strong>: media.help@apple.com</p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Fila 1: 2 columnas -->
+      <section class="grid-2">
+        <article class="card-2col hover-card scroll-anim">
+          <div class="card-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/09/apple-unveils-apple-watch-ultra-4/tile/Apple-Watch-Ultra-4-hero-260909-lp.jpg.landing-big_2x.jpg" alt="Apple Watch Ultra 4">
+          </div>
+          <div class="card-body">
+            <div class="eyebrow">COMUNICADO DE PRENSA</div>
+            <h2 class="headline">Apple presenta el Apple Watch Ultra 4</h2>
+            <div class="meta-time">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 13H11V7h1.5v8z"/></svg>
+              <span>Hace 2 días</span>
+            </div>
+          </div>
         </article>
 
-        <!-- Fila 1: 2 columnas -->
-        <section class="grid-2">
-          <article class="card-2col hover-card scroll-anim">
-            <div class="card-thumb">
-              <img src="https://www.apple.com/newsroom/images/2026/09/apple-unveils-apple-watch-ultra-4/tile/Apple-Watch-Ultra-4-hero-260909-lp.jpg.landing-big_2x.jpg" alt="Apple Watch Ultra 4">
-            </div>
-            <div class="card-body">
-              <div class="eyebrow">COMUNICADO DE PRENSA</div>
-              <h2 class="headline">Apple presenta el Apple Watch Ultra 4</h2>
-              <div class="meta-time">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 13H11V7h1.5v8z"/></svg>
-                <span>Hace 2 días</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="card-2col hover-card scroll-anim">
-            <div class="card-thumb">
-              <img src="https://www.apple.com/newsroom/images/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/geo/Apple-iPhone-18-Pro-2up-Geo-260909-lp.jpg.landing-big_2x.jpg" alt="iPhone 18 Pro y iPhone 18 Pro Max">
-            </div>
-            <div class="card-body">
-              <div class="eyebrow">COMUNICADO DE PRENSA</div>
-              <h2 class="headline">Apple presenta el iPhone 18 Pro y el iPhone 18 Pro Max</h2>
-              <div class="meta-time">
-                <span>09 de septiembre de 2026</span>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <!-- Fila 2: 3 columnas -->
-        <section class="grid-3">
-          <article class="card-3col hover-card scroll-anim">
-            <div class="card-thumb">
-              <img src="https://www.apple.com/newsroom/images/2026/09/apple-unveils-iphone-duo/tile/Apple-iPhone-Duo-opening-iPhone-Duo-260909-lp.jpg.landing-regular_2x.jpg" alt="iPhone Duo">
-            </div>
-            <div class="card-body">
-              <div class="eyebrow">COMUNICADO DE PRENSA</div>
-              <h2 class="headline">Apple presenta el iPhone Duo</h2>
-              <div class="meta-time">
-                <span>09 de septiembre de 2026</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="card-3col hover-card scroll-anim">
-            <div class="card-thumb">
-              <img src="https://www.apple.com/newsroom/images/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/tile/Apple-AirPods-5-hero-260909-lp.jpg.landing-regular_2x.jpg" alt="AirPods 5">
-            </div>
-            <div class="card-body">
-              <div class="eyebrow">COMUNICADO DE PRENSA</div>
-              <h2 class="headline">Apple presenta los AirPods 5 con la mejor Cancelación Activa de Ruido en un diseño abierto</h2>
-              <div class="meta-time">
-                <span>09 de septiembre de 2026</span>
-              </div>
-            </div>
-          </article>
-
-          <article class="card-3col hover-card scroll-anim">
-            <div class="card-thumb">
-              <img src="https://www.apple.com/newsroom/images/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/tile/Apple-Watch-Series-12-2up-260909-lp.jpg.landing-regular_2x.jpg" alt="Apple Watch Series 12">
-            </div>
-            <div class="card-body">
-              <div class="eyebrow">COMUNICADO DE PRENSA</div>
-              <h2 class="headline">Presentamos el Apple Watch Series 12</h2>
-              <div class="meta-time">
-                <span>09 de septiembre de 2026</span>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <!-- Fila 3: Más de Apple Newsroom -->
-        <h2 class="sub-heading scroll-anim">Más de Apple Newsroom</h2>
-        <section class="more-news-list">
-
-          <div class="more-news-row scroll-anim">
-            <article class="more-news-item">
-              <div class="item-thumb">
-                <img src="https://www.apple.com/newsroom/images/2026/09/the-internets-favorite-cat-comes-to-apple-arcade-with-pusheens-place/tile/Apple-Arcade-Pusheens-Place-key-art-lp.jpg.landing-1by1_2x.jpg" alt="Pusheen's Place">
-              </div>
-              <div class="item-content">
-                <div class="eyebrow">ACTUALIZACIÓN</div>
-                <h3 class="headline">La gata más querida de internet llega a Apple Arcade con Pusheen's Place</h3>
-                <div class="date">08 de septiembre de 2026</div>
-              </div>
-            </article>
-
-            <article class="more-news-item">
-              <div class="item-thumb">
-                <img src="https://www.apple.com/newsroom/images/2026/08/exciting-updates-for-sneaky-sasquatch-come-to-apple-arcade/tile/Apple-Arcade-Sneaky-Sasquatch-lp.jpg.landing-1by1_2x.jpg" alt="Sneaky Sasquatch">
-              </div>
-              <div class="item-content">
-                <div class="eyebrow">ACTUALIZACIÓN</div>
-                <h3 class="headline">Sneaky Sasquatch suma increíbles novedades para Apple Arcade</h3>
-                <div class="date">27 de agosto de 2026</div>
-              </div>
-            </article>
+        <article class="card-2col hover-card scroll-anim">
+          <div class="card-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/geo/Apple-iPhone-18-Pro-2up-Geo-260909-lp.jpg.landing-big_2x.jpg" alt="iPhone 18 Pro y iPhone 18 Pro Max">
           </div>
-
-          <div class="more-news-row scroll-anim">
-            <article class="more-news-item">
-              <div class="item-thumb">
-                <img src="https://www.apple.com/newsroom/images/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/tile/Apple-Mac-Studio-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Mac Studio">
-              </div>
-              <div class="item-content">
-                <div class="eyebrow">COMUNICADO DE PRENSA</div>
-                <h3 class="headline">Apple presenta la nueva Mac Studio con chip M5 Max y M5 Ultra</h3>
-                <div class="date">25 de agosto de 2026</div>
-              </div>
-            </article>
-
-            <article class="more-news-item">
-              <div class="item-thumb">
-                <img src="https://www.apple.com/newsroom/images/2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/tile/Apple-Mac-mini-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Mac mini">
-              </div>
-              <div class="item-content">
-                <div class="eyebrow">COMUNICADO DE PRENSA</div>
-                <h3 class="headline">Apple presenta una Mac mini más poderosa, con los nuevos chips M6 y M5 Pro</h3>
-                <div class="date">25 de agosto de 2026</div>
-              </div>
-            </article>
+          <div class="card-body">
+            <div class="eyebrow">COMUNICADO DE PRENSA</div>
+            <h2 class="headline">Apple presenta el iPhone 18 Pro y el iPhone 18 Pro Max</h2>
+            <div class="meta-time">
+              <span>09 de septiembre de 2026</span>
+            </div>
           </div>
+        </article>
+      </section>
 
-          <div class="more-news-row scroll-anim">
-            <article class="more-news-item">
-              <div class="item-thumb">
-                <img src="https://www.apple.com/newsroom/images/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/tile/Apple-M6-and-M5-Ultra-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Chips M6 y M5 Ultra">
-              </div>
-              <div class="item-content">
-                <div class="eyebrow">COMUNICADO DE PRENSA</div>
-                <h3 class="headline">Apple presenta los chips M6 y M5 Ultra</h3>
-                <div class="date">25 de agosto de 2026</div>
-              </div>
-            </article>
-
-            <article class="more-news-item">
-              <div class="item-thumb">
-                <img src="https://www.apple.com/newsroom/images/2026/08/apple-announces-changes-for-apps-in-the-european-union/tile/Apple-App-Store-compliance-hero-lp.jpg.landing-1by1_2x.jpg" alt="Cambios Unión Europea">
-              </div>
-              <div class="item-content">
-                <div class="eyebrow">ACTUALIZACIÓN</div>
-                <h3 class="headline">Apple anuncia cambios para apps en la Unión Europea</h3>
-                <div class="date">18 de agosto de 2026</div>
-              </div>
-            </article>
+      <!-- Fila 2: 3 columnas -->
+      <section class="grid-3">
+        <article class="card-3col hover-card scroll-anim">
+          <div class="card-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/09/apple-unveils-iphone-duo/tile/Apple-iPhone-Duo-opening-iPhone-Duo-260909-lp.jpg.landing-regular_2x.jpg" alt="iPhone Duo">
           </div>
+          <div class="card-body">
+            <div class="eyebrow">COMUNICADO DE PRENSA</div>
+            <h2 class="headline">Apple presenta el iPhone Duo</h2>
+            <div class="meta-time">
+              <span>09 de septiembre de 2026</span>
+            </div>
+          </div>
+        </article>
 
-        </section>
-      </div>
+        <article class="card-3col hover-card scroll-anim">
+          <div class="card-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/tile/Apple-AirPods-5-hero-260909-lp.jpg.landing-regular_2x.jpg" alt="AirPods 5">
+          </div>
+          <div class="card-body">
+            <div class="eyebrow">COMUNICADO DE PRENSA</div>
+            <h2 class="headline">Apple presenta los AirPods 5 con la mejor Cancelación Activa de Ruido en un diseño abierto</h2>
+            <div class="meta-time">
+              <span>09 de septiembre de 2026</span>
+            </div>
+          </div>
+        </article>
 
-    </main>
-  </div>
+        <article class="card-3col hover-card scroll-anim">
+          <div class="card-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/tile/Apple-Watch-Series-12-2up-260909-lp.jpg.landing-regular_2x.jpg" alt="Apple Watch Series 12">
+          </div>
+          <div class="card-body">
+            <div class="eyebrow">COMUNICADO DE PRENSA</div>
+            <h2 class="headline">Presentamos el Apple Watch Series 12</h2>
+            <div class="meta-time">
+              <span>09 de septiembre de 2026</span>
+            </div>
+          </div>
+        </article>
+      </section>
 
-  <!-- =========================================================
-       OVERLAY DIFUMINADO Y CÁPSULA EXPANDIDA
-       ========================================================= -->
-  <div id="capsuleOverlay" class="capsule-overlay" role="dialog" aria-modal="true">
-    <div class="capsule-modal" id="capsuleModal">
-      
-      <!-- Botón de cierre circular translúcido -->
-      <button id="closeModalBtn" class="modal-close-btn" aria-label="Cerrar artículo">
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="3" y1="3" x2="13" y2="13"/>
-          <line x1="13" y1="3" x2="3" y2="13"/>
-        </svg>
-      </button>
+      <!-- Fila 3: Más de Apple Newsroom -->
+      <h2 class="sub-heading scroll-anim">Más de Apple Newsroom</h2>
+      <section class="more-news-list">
 
-      <!-- Imagen superior de la cápsula -->
-      <div class="capsule-media">
-        <img src="https://www.apple.com/newsroom/images/2026/09/get-ready-to-experience-iphone-18-pro-the-new-apple-watch-lineup-and-airpods-5/tile/Apple-iPhone-18-Pro-lineup-Apple-Watch-Series-12-Apple-Watch-Ultra-4-Airpods-5-lp.jpg.landing-big_2x.jpg" alt="iPhone 18 Pro, Apple Watch y AirPods">
-      </div>
+        <div class="more-news-row scroll-anim">
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/09/the-internets-favorite-cat-comes-to-apple-arcade-with-pusheens-place/tile/Apple-Arcade-Pusheens-Place-key-art-lp.jpg.landing-1by1_2x.jpg" alt="Pusheen's Place">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">ACTUALIZACIÓN</div>
+              <h3 class="headline">La gata más querida de internet llega a Apple Arcade con Pusheen's Place</h3>
+              <div class="date">08 de septiembre de 2026</div>
+            </div>
+          </article>
 
-      <!-- Contenido estructurado de la cápsula -->
-      <div class="capsule-article-content">
-        <div class="eyebrow">ACTUALIZACIÓN</div>
-        <h1 class="capsule-title">Prepárate para los nuevos modelos de iPhone, Apple Watch y AirPods</h1>
-        
-        <div class="capsule-time">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 13H11V7h1.5v8z"/></svg>
-          <span>Hace 2 h 26 min</span>
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/08/exciting-updates-for-sneaky-sasquatch-come-to-apple-arcade/tile/Apple-Arcade-Sneaky-Sasquatch-lp.jpg.landing-1by1_2x.jpg" alt="Sneaky Sasquatch">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">ACTUALIZACIÓN</div>
+              <h3 class="headline">Sneaky Sasquatch suma increíbles novedades para Apple Arcade</h3>
+              <div class="date">27 de agosto de 2026</div>
+            </div>
+          </article>
         </div>
 
-        <div class="capsule-subheadline">
-          La preventa del iPhone 18 Pro y el iPhone 18 Pro Max comienza el sábado, 12 de septiembre
+        <div class="more-news-row scroll-anim">
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/tile/Apple-Mac-Studio-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Mac Studio">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">COMUNICADO DE PRENSA</div>
+              <h3 class="headline">Apple presenta la nueva Mac Studio con chip M5 Max y M5 Ultra</h3>
+              <div class="date">25 de agosto de 2026</div>
+            </div>
+          </article>
+
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/tile/Apple-Mac-mini-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Mac mini">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">COMUNICADO DE PRENSA</div>
+              <h3 class="headline">Apple presenta una Mac mini más poderosa, con los nuevos chips M6 y M5 Pro</h3>
+              <div class="date">25 de agosto de 2026</div>
+            </div>
+          </article>
         </div>
 
-        <div class="capsule-lead">
-          Pronto los clientes podrán comprar en preventa los nuevos modelos de iPhone 18 Pro, la nueva generación de Apple Watch, los AirPods 5 y nuevos accesorios.
+        <div class="more-news-row scroll-anim">
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/tile/Apple-M6-and-M5-Ultra-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Chips M6 y M5 Ultra">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">COMUNICADO DE PRENSA</div>
+              <h3 class="headline">Apple presenta los chips M6 y M5 Ultra</h3>
+              <div class="date">25 de agosto de 2026</div>
+            </div>
+          </article>
+
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/08/apple-announces-changes-for-apps-in-the-european-union/tile/Apple-App-Store-compliance-hero-lp.jpg.landing-1by1_2x.jpg" alt="Cambios Unión Europea">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">ACTUALIZACIÓN</div>
+              <h3 class="headline">Apple anuncia cambios para apps en la Unión Europea</h3>
+              <div class="date">18 de agosto de 2026</div>
+            </div>
+          </article>
         </div>
 
-        <!-- Cuerpo completo del artículo extraído del PDF -->
-        <div class="capsule-body">
-          <p>Llegó la hora del iPhone Pro. A partir del sábado, 12 de septiembre, a las 5 a.m. (PT), los clientes podrán comprar en preventa el iPhone 18 Pro y el iPhone 18 Pro Max en apple.com/mx y en la app Apple Store.</p>
-
-          <p>El iPhone 18 Pro y el iPhone 18 Pro Max cuentan con increíbles avances en la cámara, el rendimiento, la batería y la inteligencia. La nueva cámara Fusion principal de 48 MP con apertura variable te da un control creativo como nunca antes, y los nuevos controles Pro te permiten personalizar tu experiencia en la app Cámara para acceder fácilmente a los ajustes que más usas. Los dos modelos cuentan con la potencia del A20 Pro y una cámara de vapor de última generación para alcanzar un rendimiento continuo superior, mientras que los diseños renovados de la batería aprovechan la eficiencia del potente chip para ofrecer una duración increíble. Gracias a iOS 27, la nueva generación de Apple Intelligence y Siri AI, una versión completamente nueva de Siri, los modelos de iPhone 18 Pro incorporan poderosas capacidades de IA junto con el contexto personal para convertirse en un centro personal inteligente, con la privacidad y la seguridad en su esencia.<sup>1</sup></p>
-
-          <p>Tanto si compran online como en tiendas, los clientes pueden conectarse con Especialistas de Apple para recibir asesoramiento personalizado y elegir el dispositivo perfecto para ellos. También pueden obtener información sobre cómo proteger sus productos con el AppleCare+ o el AppleCare One, así como recibir ayuda para ahorrar y pagar, incluyendo opciones de leasing (disponible en Estados Unidos) y financiamiento y ofertas de los operadores. Los clientes pueden aprovechar el servicio de entrega a domicilio o programar el retiro en el Apple Store más cercano y en el horario que mejor les convenga.</p>
-
-          <p>Los modelos de Apple Watch Series 12, Apple Watch Ultra 4, AirPods 5, Mac mini y Mac Studio ya pueden comprarse en preventa en apple.com/mx y en la app Apple Store. Junto con el iPhone 18 Pro y el iPhone 18 Pro Max, el Apple Watch y los AirPods 5 estarán disponibles en tiendas y online en todo el mundo a partir del viernes, 18 de septiembre. La Mac mini y la Mac Studio estarán disponibles en tiendas a partir del martes, 22 de septiembre.</p>
-
-          <h2>Ahorra directamente con Apple</h2>
-          <p>Con tantas opciones de pago, cambiarse a un nuevo dispositivo Apple nunca fue tan fácil. Los clientes pueden aprovechar las opciones de leasing (disponible en Estados Unidos) y financiamiento, además de las ofertas excepcionales de los operadores. Y como el iPhone mantiene su valor por más tiempo que otros smartphones, obtienen un valor aún mayor con Apple Trade In.<sup>2</sup> Apple Trade In es una de las mejores opciones para ahorrar en los últimos modelos de iPhone. En Estados Unidos, al canjear un iPhone 13 o modelo posterior, los clientes pueden obtener desde $175 (USD) hasta $885 (USD) de crédito al instante. Para obtener más información sobre Apple Trade In en tu país, visita apple.com/mx/shop/trade-in.</p>
-
-          <h2>Explora los productos</h2>
-          <p>El iPhone 18 Pro y el iPhone 18 Pro Max cuentan con la cámara más avanzada de Apple hasta ahora, con grandes mejoras en batería y rendimiento. La nueva cámara Fusion principal de 48 MP con apertura variable se ajusta automáticamente a la profundidad de campo y la iluminación, mientras que los Estilos Fotográficos mejorados ahora permiten controlar la textura y grano de las fotos, para dar rienda suelta a la creatividad. Los controles Pro permiten a los usuarios personalizar su experiencia en la app Cámara, y los efectos de Cine pueden agregarse después de grabar en videos de hasta 60 fps. Los diseños renovados de la batería aprovechan la eficiencia del potente chip para ofrecer una duración de batería increíble, y el iPhone 18 Pro Max brinda el mayor salto en batería en un iPhone hasta ahora. Además, la cámara de vapor de última generación permite aprovechar al máximo el rendimiento del A20 Pro, una superpotencia para las cargas de trabajo de IA en el dispositivo. El iPhone 18 Pro y el iPhone 18 Pro Max incorporan la nueva generación de Apple Intelligence y Siri AI, un asistente mucho más personal, capaz y conversacional que estará disponible en versión beta con iOS 27. Gracias a la comprensión del contexto personal, un amplio conocimiento del mundo y el reconocimiento de contenido en pantalla, podrá ayudar a los usuarios a encontrar lo que necesitan en el momento y hacer de todo durante el día.<sup>4</sup></p>
-
-          <p>iOS 27 incorpora una gran cantidad de mejoras que hacen que el iPhone sea más preciso, confiable y fácil de usar. Ambos modelos estarán disponibles en negro, color plata, color glaciar y el nuevo color borgoña.</p>
-
-          <p>El Apple Watch Series 12 y el Apple Watch Ultra 4 están diseñados con el nuevo sistema de registro de datos de salud y el nuevo chip S11 para ofrecer la medición de frecuencia cardiaca más precisa en un dispositivo wearable, así como mediciones de frecuencia cardiaca y variabilidad de la frecuencia cardiaca (VFC) de mayor frecuencia, y avanzadas funcionalidades de salud y fitness, como una nueva puntuación de disposición que ofrece a los usuarios información sobre su capacidad para enfrentar el día que les espera. El Apple Watch Series 12 ofrece hasta 24 horas de batería para uso diario y, gracias a una carga más rápida, hasta 12 horas de batería adicional con sólo 15 minutos de carga. El Apple Watch Ultra 4 es el compañero perfecto para el deporte y la aventura, y ofrece hasta 45 horas de registro de entrenamiento al aire libre y más de dos días (hasta 50 horas) de batería para uso diario. Siri AI llega al Apple Watch Series 12 y al Apple Watch Ultra 4 con watchOS 27.<sup>1</sup> El Apple Watch Series 12 está disponible en opciones de aluminio color bronce oscuro, negro, color oro claro y gris espacial, además de titanio color oro radiante y titanio natural, y una nueva y elegante versión de cerámica en blanco perla y azul noche.</p>
-
-          <p>Los AirPods 5 ofrecen la mejor Cancelación Activa de Ruido (ANC) de la industria en un diseño abierto y una calidad de sonido aún mejor, a un precio sorprendente. Los AirPods 5 traen una nueva arquitectura acústica multipuerto y Ecualización Adaptativa de última generación para disfrutar un sonido aún más envolvente. Su revolucionaria Cancelación Activa de Ruido en este tipo de diseño elimina hasta un 50% más de ruido externo que los AirPods 4 con Cancelación Activa de Ruido y ofrece un modo Ambiente más natural. Los AirPods 5 con Estuche de Carga Inalámbrica tienen mayor duración de batería y un sensor de fuerza con control de volumen, por primera vez en este diseño abierto, que permite ajustar el volumen deslizando hacia arriba o hacia abajo en la parte inferior de los audífonos. Al combinar los AirPods con Siri AI y el iPhone, los usuarios pueden obtener respuestas a partir de información basada en su contexto personal y un amplio conocimiento del mundo, todo sin usar las manos. También pueden responder a Siri con gestos de la cabeza o usar Traducción en Vivo para comunicarse en otros idiomas.</p>
-
-          <p>La nueva Mac mini con los nuevos M6 y M5 Pro ofrece un increíble salto en rendimiento y aún más versatilidad, en un diseño de escritorio supercompacto. Con el M6, la Mac mini ofrece un rendimiento de IA hasta 4 veces más rápido, almacenamiento 2 veces más rápido, gráficos más veloces y un rendimiento del CPU un 40% más rápido que la generación anterior. Por su parte, la Mac mini con M5 Pro ofrece un rendimiento aún más profesional para volar por los proyectos más exigentes, como la producción de videos o el desarrollo de juegos. Este nuevo nivel de rendimiento resuelve los flujos de trabajo profesionales con facilidad, tanto si la Mac mini se usa como una computadora de escritorio principal o como computación agéntica siempre activa de forma local.</p>
-
-          <p>La nueva Mac Studio con el M5 Max y el nuevo M5 Ultra representa un salto enorme en el rendimiento de la IA y ofrece gráficos aún más rápidos para enfrentar los flujos de trabajo profesionales más exigentes, todo en el diseño compacto y característico para el escritorio de los usuarios. La Mac Studio ayuda a creativos, desarrolladores, investigadores de IA, científicos de datos y muchos profesionales más a desafiar los límites de lo que pueden hacer, y ahora ofrece un rendimiento de IA hasta 4.3 veces más veloz,<sup>10</sup> un almacenamiento hasta el doble de rápido,<sup>11</sup> gráficos hasta 1.8 veces más veloces,<sup>10</sup> un rendimiento del CPU hasta 1.3 veces más rápido y un mayor ancho de banda de memoria. También ofrece hasta 512 GB de memoria unificada,<sup>12</sup> hasta 1.2 TB/s de ancho de banda de memoria unificada y una amplia conectividad, incluidos los puertos Thunderbolt 5. La Mac mini y la Mac Studio también vienen con Wi-Fi 7 y Bluetooth 6. Junto con la potencia de macOS 27 y la última generación de Apple Intelligence, con Siri AI integrado, cualquiera de los dos modelos representa un gran avance.</p>
-
-          <h2>Prepárate para cambiar tu modelo con Apple</h2>
-          <p>La forma más rápida de reservar tu iPhone 18 Pro y iPhone 18 Pro Max es preparándote hoy mismo. Los clientes tienen hasta el viernes, 11 de septiembre, a las 9 a.m. (PT) para seleccionar su modelo, elegir los accesorios, obtener la aprobación previa del leasing (disponible en Estados Unidos) o financiamiento y realizar su canje con tranquilidad. Al guardar la bolsa de compras, estarán a un clic de distancia cuando comiencen las preventas el sábado, 12 de septiembre a las 5 a.m. (PT).</p>
-
-          <p>Los clientes obtienen lo mejor de Apple cuando compran directamente online o en la tienda. Nuestro equipo de Especialistas puede ayudarlos de principio a fin con todo lo que necesitan saber, desde descubrir las últimas opciones de canje y formas de ahorrar hasta la transferencia segura de sus datos con la Configuración Personalizada. Los clientes también pueden descubrir cómo aprovechar aún más sus nuevos dispositivos en las sesiones gratuitas de Today at Apple. Con ofertas actualizadas como "Dile hola al iPhone 18 Pro" y "Consejos: Novedades de iOS 27", estas clases prácticas son la manera perfecta de explorar las capacidades de los últimos productos.</p>
-
-          <h2>Agrega un toque personal</h2>
-          <p>Los modelos de iPhone 18 Pro y iPhone 18 Pro Max se pueden combinar con una variedad de fundas de silicón, fundas de TechWoven, correas cruzadas y carteras de FineWoven, todas diseñadas para complementar los cuatro increíbles acabados. La funda transparente tiene un diseño renovado y ahora se puede acoplar a la correa cruzada o a la nueva correa de muñeca, que permite llevar el iPhone, los AirPods Pro 2 o los AirPods Pro 3 convenientemente sin usar las manos. Está fabricada con hilo de poliéster 100% reciclado e incorpora imanes flexibles para un ajuste perfecto. Estará disponible en seis colores: negro, visón, oliva, azul nítido, magenta y borgoña.</p>
-
-          <h2>Prueba Apple One</h2>
-          <p>Las nuevas suscripciones y las suscripciones reactivadas que cumplan con los requisitos obtienen tres meses gratis de Apple One con la compra de un iPhone 18 Pro o un iPhone 18 Pro Max. Apple One agrupa hasta seis servicios de Apple en un solo plan para varios dispositivos Apple: Apple TV, Apple Music, hasta 2 TB de almacenamiento en iCloud+ y más.<sup>13</sup></p>
-
-          <!-- Notas al pie -->
-          <div class="article-footnotes">
-            <ol>
-              <li>Apple Intelligence está disponible con Siri y el idioma del dispositivo configurados en chino (simplificado), chino (tradicional), danés, neerlandés, inglés, francés, alemán, italiano, japonés, coreano, noruego, portugués, español, sueco, turco o vietnamita. Siri AI estará disponible inicialmente en versión beta en iOS 27, macOS 27, iPadOS 27 y watchOS 27.</li>
-              <li>El valor de canje varía según la condición, el año y la configuración del dispositivo elegible. Más información en apple.com/mx/tradein.</li>
-              <li>Los nuevos controles de textura y grano en Estilos Fotográficos estarán disponibles en iOS 27.</li>
-              <li>Siri AI no estará disponible en iOS, iPadOS ni watchOS en la Unión Europea al momento del lanzamiento.</li>
-              <li>Según los datos de un estudio realizado por Apple en julio y agosto de 2026 sobre la precisión de la frecuencia cardiaca.</li>
-              <li>Pruebas realizadas por Apple en julio de 2026 con unidades AirPods 5 enlazadas con un iPhone 17.</li>
-              <li>La duración de la batería varía según el uso. Más información en apple.com/mx/batteries.</li>
-              <li>Resultados obtenidos en comparación con sistemas Mac mini de generaciones anteriores con M4.</li>
-              <li>Pruebas realizadas por Apple en julio de 2026. Para más información, visita apple.com/mx/mac-mini.</li>
-              <li>Pruebas realizadas por Apple en julio de 2026. Para más información, visita apple.com/mx/mac-studio.</li>
-              <li>Resultados comparados con la Mac Studio anterior con M3 Ultra.</li>
-              <li>La Mac Studio con 512 GB de memoria unificada estará disponible a finales de octubre.</li>
-              <li>Oferta disponible en algunos países y regiones con un nuevo dispositivo elegible a partir del 17 de septiembre.</li>
-            </ol>
-          </div>
-
-          <!-- Contactos de prensa -->
-          <div class="press-contacts">
-            <h3>Contactos de prensa</h3>
-            <p><strong>Mauricio Valdespino Amaya</strong> · Apple</p>
-            <p>m_valdespinoamaya@apple.com · +52-55-10376546</p>
-            <p><strong>Apple Media Helpline</strong>: media.help@apple.com</p>
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
-  </div>
+
+  </main>
 
   <script>
     /* =========================================================
@@ -1198,52 +1122,30 @@
     setTimeout(checkInitialVisibility, 50);
 
     /* =========================================================
-       2. ANIMACIÓN DE COMPRESIÓN Y APERTURA DE CÁPSULA
+       2. EXPANSIÓN Y COMPRESIÓN IN-SITU (SIN MODAL NI DIFUMINADO)
        ========================================================= */
-    const heroTrigger = document.getElementById('heroTrigger');
-    const capsuleOverlay = document.getElementById('capsuleOverlay');
-    const capsuleModal = document.getElementById('capsuleModal');
-    const closeModalBtn = document.getElementById('closeModalBtn');
+    const heroCard = document.getElementById('heroCard');
+    const heroCollapseBtn = document.getElementById('heroCollapseBtn');
 
-    function openCapsule() {
-      // 1. Iniciar la compresión de la derecha hacia la izquierda
-      heroTrigger.classList.add('compressing');
+    function toggleHeroArticle(e) {
+      // Evitar que el clic en enlaces o botones internos vuelva a disparar toggle
+      if (e.target.closest('a') || e.target.closest('#heroCollapseBtn')) return;
 
-      // 2. Transición suave al overlay difuminado y despliegue de la cápsula
-      setTimeout(() => {
-        capsuleOverlay.classList.add('active');
-        document.body.classList.add('modal-open');
-        capsuleModal.scrollTop = 0;
-      }, 160);
+      if (!heroCard.classList.contains('is-expanded')) {
+        heroCard.classList.add('is-expanded');
+      }
     }
 
-    function closeCapsule() {
-      // 1. Cerrar cápsula y restaurar fondo
-      capsuleOverlay.classList.remove('active');
-      document.body.classList.remove('modal-open');
-
-      // 2. Restaurar la tarjeta original con suavidad
-      setTimeout(() => {
-        heroTrigger.classList.remove('compressing');
-      }, 300);
+    function collapseHeroArticle(e) {
+      e.stopPropagation();
+      heroCard.classList.remove('is-expanded');
+      // Desplazamiento suave para recolocar la tarjeta si se había bajado leyendo
+      const cardTop = heroCard.getBoundingClientRect().top + window.pageYOffset - 60;
+      window.scrollTo({ top: cardTop, behavior: 'smooth' });
     }
 
-    heroTrigger.addEventListener('click', openCapsule);
-    closeModalBtn.addEventListener('click', closeCapsule);
-
-    // Cerrar al pulsar sobre el fondo difuminado exterior
-    capsuleOverlay.addEventListener('click', (e) => {
-      if (e.target === capsuleOverlay) {
-        closeCapsule();
-      }
-    });
-
-    // Cerrar con Escape
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && capsuleOverlay.classList.contains('active')) {
-        closeCapsule();
-      }
-    });
+    heroCard.addEventListener('click', toggleHeroArticle);
+    heroCollapseBtn.addEventListener('click', collapseHeroArticle);
 
     /* =========================================================
        3. ANIMACIÓN DE ESCRITOR EN EL PLACEHOLDER
