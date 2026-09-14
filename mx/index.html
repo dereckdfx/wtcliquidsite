@@ -174,7 +174,33 @@
       color: var(--text);
     }
 
-    /* Tarjeta destacada principal */
+    /* Estilos compartidos de tarjeta */
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .meta-time {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: auto;
+      padding-top: 20px;
+    }
+
+    .meta-time svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+
+    /* Tarjeta destacada principal (Hero) */
     .hero-card {
       background: var(--card-bg);
       border-radius: 24px;
@@ -189,9 +215,6 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .hero-media img {
@@ -208,16 +231,7 @@
       justify-content: center;
     }
 
-    .eyebrow {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 14px;
-    }
-
-    .headline {
+    .hero-info .headline {
       font-size: 34px;
       font-weight: 700;
       line-height: 1.14;
@@ -226,45 +240,108 @@
       margin-bottom: 24px;
     }
 
-    .meta-time {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .meta-time svg {
-      width: 16px;
-      height: 16px;
-      fill: currentColor;
-    }
-
     /* Grilla de 2 columnas */
-    .cards-grid {
+    .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 24px;
+      margin-bottom: 28px;
     }
 
-    .grid-tile {
-      background: #000000;
+    .card-2col {
+      background: var(--card-bg);
       border-radius: 24px;
       overflow: hidden;
-      aspect-ratio: 16 / 10;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
     }
 
-    .grid-tile img {
+    .card-2col .card-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      background: #000000;
+      overflow: hidden;
+    }
+
+    .card-2col .card-thumb img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
 
+    .card-2col .card-body {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-2col .headline {
+      font-size: 25px;
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -0.015em;
+      color: var(--text);
+    }
+
+    /* Grilla de 3 columnas */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card-3col {
+      background: var(--card-bg);
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-3col .card-thumb {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: var(--card-bg);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-3col .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .card-3col .card-body {
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-3col .headline {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.22;
+      letter-spacing: -0.012em;
+      color: var(--text);
+    }
+
     /* ---------- RESPONSIVO ---------- */
+    @media (max-width: 900px) {
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 860px) {
       .global-nav {
         display: none;
@@ -278,14 +355,11 @@
       .hero-info {
         padding: 32px 24px;
       }
-      .headline {
+      .hero-info .headline {
         font-size: 26px;
       }
       .section-heading {
         font-size: 32px;
-      }
-      .cards-grid {
-        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -353,7 +427,7 @@
   <main class="main-wrap">
     <h1 class="section-heading">Últimas noticias</h1>
 
-    <!-- Tarjeta Destacada -->
+    <!-- Tarjeta Destacada (Hero) -->
     <article class="hero-card">
       <div class="hero-media">
         <img src="https://www.apple.com/newsroom/images/2026/09/get-ready-to-experience-iphone-18-pro-the-new-apple-watch-lineup-and-airpods-5/tile/Apple-iPhone-18-Pro-lineup-Apple-Watch-Series-12-Apple-Watch-Ultra-4-Airpods-5-lp.jpg.landing-big_2x.jpg" alt="iPhone 18 Pro, Apple Watch y AirPods">
@@ -370,18 +444,85 @@
       </div>
     </article>
 
-    <!-- Grilla inferior de tarjetas -->
-    <section class="cards-grid">
+    <!-- Fila 1: Grilla de 2 columnas -->
+    <section class="grid-2">
       <!-- Tarjeta Apple Watch Ultra 4 -->
-      <article class="grid-tile">
-        <img src="https://www.apple.com/newsroom/images/2026/09/apple-unveils-apple-watch-ultra-4/tile/Apple-Watch-Ultra-4-hero-260909-lp.jpg.landing-big_2x.jpg" alt="Apple Watch Ultra 4">
+      <article class="card-2col">
+        <div class="card-thumb">
+          <img src="https://www.apple.com/newsroom/images/2026/09/apple-unveils-apple-watch-ultra-4/tile/Apple-Watch-Ultra-4-hero-260909-lp.jpg.landing-big_2x.jpg" alt="Apple Watch Ultra 4">
+        </div>
+        <div class="card-body">
+          <div class="eyebrow">COMUNICADO DE PRENSA</div>
+          <h2 class="headline">Apple presenta el Apple Watch Ultra 4</h2>
+          <div class="meta-time">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 13H11V7h1.5v8z"/>
+            </svg>
+            <span>Hace 2 días</span>
+          </div>
+        </div>
       </article>
 
       <!-- Tarjeta iPhone 18 Pro -->
-      <article class="grid-tile">
-        <img src="https://www.apple.com/newsroom/images/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/geo/Apple-iPhone-18-Pro-2up-Geo-260909-lp.jpg.landing-big_2x.jpg" alt="Apple iPhone 18 Pro y iPhone 18 Pro Max">
+      <article class="card-2col">
+        <div class="card-thumb">
+          <img src="https://www.apple.com/newsroom/images/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/geo/Apple-iPhone-18-Pro-2up-Geo-260909-lp.jpg.landing-big_2x.jpg" alt="iPhone 18 Pro y iPhone 18 Pro Max">
+        </div>
+        <div class="card-body">
+          <div class="eyebrow">COMUNICADO DE PRENSA</div>
+          <h2 class="headline">Apple presenta el iPhone 18 Pro y el iPhone 18 Pro Max</h2>
+          <div class="meta-time">
+            <span>09 de septiembre de 2026</span>
+          </div>
+        </div>
       </article>
     </section>
+
+    <!-- Fila 2: Grilla de 3 columnas -->
+    <section class="grid-3">
+      <!-- Tarjeta iPhone Duo -->
+      <article class="card-3col">
+        <div class="card-thumb">
+          <img src="https://www.apple.com/newsroom/images/2026/09/apple-unveils-iphone-duo/tile/Apple-iPhone-Duo-opening-iPhone-Duo-260909-lp.jpg.landing-regular_2x.jpg" alt="iPhone Duo">
+        </div>
+        <div class="card-body">
+          <div class="eyebrow">COMUNICADO DE PRENSA</div>
+          <h2 class="headline">Apple presenta el iPhone Duo</h2>
+          <div class="meta-time">
+            <span>09 de septiembre de 2026</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tarjeta AirPods 5 -->
+      <article class="card-3col">
+        <div class="card-thumb">
+          <img src="https://www.apple.com/newsroom/images/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/tile/Apple-AirPods-5-hero-260909-lp.jpg.landing-regular_2x.jpg" alt="AirPods 5">
+        </div>
+        <div class="card-body">
+          <div class="eyebrow">COMUNICADO DE PRENSA</div>
+          <h2 class="headline">Apple presenta los AirPods 5 con la mejor Cancelación Activa de Ruido en un diseño abierto</h2>
+          <div class="meta-time">
+            <span>09 de septiembre de 2026</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tarjeta Apple Watch Series 12 -->
+      <article class="card-3col">
+        <div class="card-thumb">
+          <img src="https://www.apple.com/newsroom/images/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/tile/Apple-Watch-Series-12-2up-260909-lp.jpg.landing-regular_2x.jpg" alt="Apple Watch Series 12">
+        </div>
+        <div class="card-body">
+          <div class="eyebrow">COMUNICADO DE PRENSA</div>
+          <h2 class="headline">Presentamos el Apple Watch Series 12</h2>
+          <div class="meta-time">
+            <span>09 de septiembre de 2026</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
   </main>
 
 </body>
