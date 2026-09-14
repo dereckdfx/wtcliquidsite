@@ -255,7 +255,7 @@
     }
 
     /* =========================================================
-       TARJETA HERO CON ANIMACIÓN SUAVE DE APERTURA Y CIERRE
+       TARJETA HERO CON MORFOLOGÍA Y RETORNO SUAVE DEL TEXTO
        ========================================================= */
     .hero-card {
       background: var(--card-bg);
@@ -264,25 +264,27 @@
       margin-bottom: 36px;
       position: relative;
       cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
       transition: border-radius 0.65s var(--apple-ease),
                   box-shadow 0.65s var(--apple-ease),
-                  background-color 0.5s ease;
+                  background 0.5s ease;
     }
 
-    /* Estructura flexible fluida (sin saltos bruscos de display) */
+    /* Sección superior */
     .hero-top-section {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: row;
       width: 100%;
+      position: relative;
     }
 
     .hero-media-wrapper {
       width: 55%;
       height: 380px;
-      padding: 0;
-      transition: width 0.65s var(--apple-ease),
-                  height 0.65s var(--apple-ease),
-                  padding 0.65s var(--apple-ease);
+      flex-shrink: 0;
+      overflow: hidden;
+      border-radius: 0;
+      will-change: transform, width, height;
     }
 
     .hero-media-wrapper img {
@@ -290,8 +292,7 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      border-radius: 0;
-      transition: border-radius 0.65s var(--apple-ease);
+      border-radius: inherit;
     }
 
     .hero-text-wrapper {
@@ -300,8 +301,8 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      transition: width 0.65s var(--apple-ease),
-                  padding 0.65s var(--apple-ease);
+      box-sizing: border-box;
+      will-change: transform;
     }
 
     .hero-text-wrapper .headline {
@@ -311,7 +312,7 @@
       letter-spacing: -0.015em;
       color: var(--text);
       margin-bottom: 24px;
-      transition: font-size 0.5s var(--apple-ease);
+      transition: font-size 0.45s var(--apple-ease);
     }
 
     /* Botón flotante para cerrar/colapsar */
@@ -354,13 +355,13 @@
       min-height: 0;
     }
 
-    /* El contenido textual del PDF y su animación de deslizamiento */
+    /* Contenido textual del PDF con descenso al cerrar */
     .article-content-flow {
       padding: 0 44px 48px;
       opacity: 0;
       transform: translateY(32px);
-      transition: opacity 0.5s var(--apple-ease),
-                  transform 0.65s var(--apple-ease);
+      transition: opacity 0.45s var(--apple-ease),
+                  transform 0.6s var(--apple-ease);
     }
 
     /* ---------- ESTADO EXPANDIDO (CÁPSULA) ---------- */
@@ -381,19 +382,19 @@
       transform: scale(1);
     }
 
-    /* La imagen se expande a cápsula superior */
+    /* Transformación a columna vertical */
+    .hero-card.is-expanded .hero-top-section {
+      flex-direction: column;
+    }
+
     .hero-card.is-expanded .hero-media-wrapper {
-      width: 100%;
+      width: calc(100% - 32px);
       height: 480px;
-      padding: 16px 16px 0;
-    }
-
-    .hero-card.is-expanded .hero-media-wrapper img {
+      margin: 16px 16px 0;
       border-radius: 26px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
     }
 
-    /* El texto derecho pasa al ancho total inferior */
     .hero-card.is-expanded .hero-text-wrapper {
       width: 100%;
       padding: 34px 44px 12px;
@@ -406,7 +407,6 @@
       margin-bottom: 12px;
     }
 
-    /* Despliegue del acordeón y entrada suave del texto */
     .hero-card.is-expanded .hero-accordion-wrapper {
       grid-template-rows: 1fr;
     }
@@ -414,19 +414,18 @@
     .hero-card.is-expanded .article-content-flow {
       opacity: 1;
       transform: translateY(0);
-      transition-delay: 0.1s;
+      transition-delay: 0.08s;
     }
 
-    /* ---------- ANIMACIÓN DE CIERRE (EL TEXTO BAJA SUAVEMENTE) ---------- */
+    /* ---------- FASE DE CIERRE: DESCENSO DEL TEXTO ---------- */
     .hero-card.is-closing .hero-accordion-wrapper {
       grid-template-rows: 0fr;
-      transition: grid-template-rows 0.6s var(--apple-ease);
     }
 
     .hero-card.is-closing .article-content-flow {
       opacity: 0;
-      transform: translateY(36px); /* Se baja hacia abajo suavemente */
-      transition: opacity 0.35s ease, transform 0.5s var(--apple-ease);
+      transform: translateY(38px); /* Baja suavemente antes de desaparecer */
+      transition: opacity 0.3s ease, transform 0.45s var(--apple-ease);
       transition-delay: 0s;
     }
 
@@ -776,6 +775,7 @@
       .grid-3 { grid-template-columns: 1fr; }
       .grid-2 { grid-template-columns: 1fr; }
       .more-news-row { grid-template-columns: 1fr; gap: 28px; padding: 24px 0; }
+      .hero-top-section { flex-direction: column; }
       .hero-media-wrapper { width: 100%; height: 260px; }
       .hero-text-wrapper { width: 100%; padding: 32px 24px; }
       .hero-card.is-expanded .hero-text-wrapper { padding: 24px 20px 8px; }
@@ -854,7 +854,7 @@
     </div>
   </header>
 
-  <!-- Contenedor Principal (Sin difuminado, permanece exactamente en su lugar) -->
+  <!-- Contenedor Principal (Sin difuminado, en su posición natural) -->
   <main class="main-wrap">
 
     <!-- Vista de Resultados del Buscador -->
@@ -870,7 +870,7 @@
     <div id="mainContent">
       <h1 class="section-heading scroll-anim">Últimas noticias</h1>
 
-      <!-- TARJETA HERO: EXPANSIÓN Y CIERRE CON DESCENSO SUAVE -->
+      <!-- TARJETA HERO: CON ANIMACIÓN FLIP DE ASCENSO/DESCENSO DEL TEXTO -->
       <article class="hero-card hover-card scroll-anim" id="heroCard">
         <!-- Botón para cerrar/colapsar -->
         <button id="heroCollapseBtn" class="hero-collapse-btn" aria-label="Cerrar artículo" title="Cerrar noticia">
@@ -880,12 +880,12 @@
           </svg>
         </button>
 
-        <!-- Cabecera de la tarjeta: Se transforma suavemente entre 2 columnas y cápsula vertical -->
+        <!-- Cabecera de la tarjeta: Se transforma entre 2 columnas y cápsula vertical -->
         <div class="hero-top-section" id="heroTopSection">
-          <div class="hero-media-wrapper">
+          <div class="hero-media-wrapper" id="heroMedia">
             <img src="https://www.apple.com/newsroom/images/2026/09/get-ready-to-experience-iphone-18-pro-the-new-apple-watch-lineup-and-airpods-5/tile/Apple-iPhone-18-Pro-lineup-Apple-Watch-Series-12-Apple-Watch-Ultra-4-Airpods-5-lp.jpg.landing-big_2x.jpg" alt="iPhone 18 Pro, Apple Watch y AirPods">
           </div>
-          <div class="hero-text-wrapper">
+          <div class="hero-text-wrapper" id="heroText">
             <div class="eyebrow">ACTUALIZACIÓN</div>
             <h2 class="headline">Prepárate para los nuevos modelos de iPhone, Apple Watch y AirPods</h2>
             <div class="meta-time">
@@ -1162,42 +1162,147 @@
     setTimeout(checkInitialVisibility, 50);
 
     /* =========================================================
-       2. EXPANSIÓN Y CIERRE CON DESCENSO SUAVE DEL TEXTO
+       2. EXPANSIÓN Y RETORNO CON FLIP ANIMATION (TEXTO SUBE Y BAJA)
        ========================================================= */
     const heroCard = document.getElementById('heroCard');
+    const heroMedia = document.getElementById('heroMedia');
+    const heroText = document.getElementById('heroText');
     const heroCollapseBtn = document.getElementById('heroCollapseBtn');
+    let isAnimating = false;
 
-    function openHeroArticle(e) {
-      if (e.target.closest('a') || e.target.closest('#heroCollapseBtn')) return;
-      if (heroCard.classList.contains('is-expanded') || heroCard.classList.contains('is-closing')) return;
+    function openHeroArticle() {
+      if (heroCard.classList.contains('is-expanded') || isAnimating) return;
+      isAnimating = true;
 
+      // 1. FIRST: Medir coordenadas iniciales
+      const mediaFirst = heroMedia.getBoundingClientRect();
+      const textFirst = heroText.getBoundingClientRect();
+
+      // 2. Cambiar a estado expandido
       heroCard.classList.add('is-expanded');
+
+      // 3. LAST: Medir coordenadas finales
+      const mediaLast = heroMedia.getBoundingClientRect();
+      const textLast = heroText.getBoundingClientRect();
+
+      // 4. INVERT: Desplazar temporalmente a su posición original
+      const mediaDeltaX = mediaFirst.left - mediaLast.left;
+      const mediaDeltaY = mediaFirst.top - mediaLast.top;
+      const mediaScaleX = mediaFirst.width / mediaLast.width;
+      const mediaScaleY = mediaFirst.height / mediaLast.height;
+
+      const textDeltaX = textFirst.left - textLast.left;
+      const textDeltaY = textFirst.top - textLast.top;
+
+      heroMedia.style.transformOrigin = 'top left';
+      heroMedia.style.transition = 'none';
+      heroMedia.style.transform = `translate(${mediaDeltaX}px, ${mediaDeltaY}px) scale(${mediaScaleX}, ${mediaScaleY})`;
+
+      heroText.style.transformOrigin = 'top left';
+      heroText.style.transition = 'none';
+      heroText.style.transform = `translate(${textDeltaX}px, ${textDeltaY}px)`;
+
+      // 5. PLAY: Animar suavemente hacia la nueva posición en cápsula
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          heroMedia.style.transition = 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
+          heroText.style.transition = 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
+          heroMedia.style.transform = '';
+          heroText.style.transform = '';
+
+          setTimeout(() => {
+            heroMedia.style.transition = '';
+            heroText.style.transition = '';
+            heroMedia.style.transformOrigin = '';
+            heroText.style.transformOrigin = '';
+            isAnimating = false;
+          }, 650);
+        });
+      });
     }
 
-    function closeHeroArticle(e) {
-      if (e) e.stopPropagation();
-      if (!heroCard.classList.contains('is-expanded') || heroCard.classList.contains('is-closing')) return;
+    function closeHeroArticle() {
+      if (!heroCard.classList.contains('is-expanded') || isAnimating) return;
+      isAnimating = true;
 
-      // 1. Iniciar la fase de cierre: el texto desciende suavemente
+      // 1. FIRST: Medir posición del texto e imagen abajo en la cápsula
+      const mediaFirst = heroMedia.getBoundingClientRect();
+      const textFirst = heroText.getBoundingClientRect();
+
+      // Iniciar el descenso suave del texto largo del artículo
       heroCard.classList.add('is-closing');
       heroCard.classList.remove('is-expanded');
 
-      // 2. Desplazamiento suave para recolocar la tarjeta si el usuario había hecho scroll leyendo
+      // 2. LAST: Medir posición normal arriba y a la derecha
+      const mediaLast = heroMedia.getBoundingClientRect();
+      const textLast = heroText.getBoundingClientRect();
+
+      // 3. INVERT: Colocar los elementos en la posición de cápsula para animar su regreso
+      const mediaDeltaX = mediaFirst.left - mediaLast.left;
+      const mediaDeltaY = mediaFirst.top - mediaLast.top;
+      const mediaScaleX = mediaFirst.width / mediaLast.width;
+      const mediaScaleY = mediaFirst.height / mediaLast.height;
+
+      const textDeltaX = textFirst.left - textLast.left;
+      const textDeltaY = textFirst.top - textLast.top;
+
+      heroMedia.style.transformOrigin = 'top left';
+      heroMedia.style.transition = 'none';
+      heroMedia.style.transform = `translate(${mediaDeltaX}px, ${mediaDeltaY}px) scale(${mediaScaleX}, ${mediaScaleY})`;
+
+      heroText.style.transformOrigin = 'top left';
+      heroText.style.transition = 'none';
+      heroText.style.transform = `translate(${textDeltaX}px, ${textDeltaY}px)`;
+
+      // Desplazamiento suave para reubicar la vista si se había bajado leyendo
       const cardRect = heroCard.getBoundingClientRect();
       if (cardRect.top < 60) {
         const targetScroll = window.pageYOffset + cardRect.top - 60;
         window.scrollTo({ top: targetScroll, behavior: 'smooth' });
       }
 
-      // 3. Finalizar la transición y dejar la tarjeta en su estado inicial
-      setTimeout(() => {
-        heroCard.classList.remove('is-closing');
-      }, 650);
+      // 4. PLAY: El texto sube y viaja de regreso a la derecha con suavidad
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          heroMedia.style.transition = 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), border-radius 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
+          heroText.style.transition = 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
+          heroMedia.style.transform = '';
+          heroText.style.transform = '';
+
+          setTimeout(() => {
+            heroMedia.style.transition = '';
+            heroText.style.transition = '';
+            heroMedia.style.transformOrigin = '';
+            heroText.style.transformOrigin = '';
+            heroCard.classList.remove('is-closing');
+            isAnimating = false;
+          }, 650);
+        });
+      });
     }
 
-    heroCard.addEventListener('click', openHeroArticle);
-    heroCollapseBtn.addEventListener('click', closeHeroArticle);
+    // Abrir al hacer clic en la tarjeta
+    heroCard.addEventListener('click', (e) => {
+      if (e.target.closest('#heroCollapseBtn') || e.target.closest('a')) return;
+      if (!heroCard.classList.contains('is-expanded')) {
+        openHeroArticle();
+      }
+    });
 
+    // Cerrar con el botón ✕
+    heroCollapseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeHeroArticle();
+    });
+
+    // Cerrar si pulsas con el ratón en cualquier lugar fuera de la cápsula
+    document.addEventListener('click', (e) => {
+      if (heroCard.classList.contains('is-expanded') && !heroCard.contains(e.target)) {
+        closeHeroArticle();
+      }
+    });
+
+    // Cerrar con tecla Escape
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && heroCard.classList.contains('is-expanded')) {
         closeHeroArticle();
