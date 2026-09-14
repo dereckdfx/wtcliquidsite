@@ -12,6 +12,7 @@
       --muted: #86868b;
       --nav-dark: #161617;
       --border: rgba(0, 0, 0, 0.08);
+      --accent-blue: #0071e3;
       --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -26,6 +27,7 @@
       background: var(--bg);
       color: var(--text);
       font-family: var(--font);
+      overflow-x: hidden;
     }
 
     a {
@@ -45,6 +47,7 @@
       position: sticky;
       top: 0;
       z-index: 1000;
+      animation: navFadeDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     .global-nav-content {
@@ -98,6 +101,7 @@
       top: 44px;
       z-index: 999;
       height: 52px;
+      animation: navFadeDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     .newsroom-header-wrap {
@@ -133,17 +137,24 @@
       color: #000;
     }
 
+    /* ---------- ANIMACIÓN DE BUSCADOR (EXPANSIÓN Y GLOW) ---------- */
     .search-pill {
       display: flex;
       align-items: center;
       gap: 8px;
       background: #f5f5f7;
-      border: 1px solid rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: 980px;
       padding: 6px 14px;
       font-size: 13px;
       color: var(--muted);
       cursor: text;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .search-pill svg {
+      transition: transform 0.3s ease, stroke 0.3s ease;
+      flex-shrink: 0;
     }
 
     .search-pill input {
@@ -153,11 +164,23 @@
       font-family: inherit;
       font-size: 13px;
       color: var(--text);
-      width: 120px;
+      width: 140px;
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .search-pill input::placeholder {
-      color: var(--muted);
+    .search-pill:focus-within {
+      background: #ffffff;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15), 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-pill:focus-within input {
+      width: 210px;
+    }
+
+    .search-pill:focus-within svg {
+      transform: scale(1.1) rotate(-5deg);
+      stroke: var(--accent-blue);
     }
 
     /* ---------- CONTENIDO PRINCIPAL ---------- */
@@ -183,7 +206,6 @@
       color: var(--text);
     }
 
-    /* Estilos compartidos de texto */
     .eyebrow {
       font-size: 12px;
       font-weight: 600;
@@ -207,6 +229,39 @@
       width: 15px;
       height: 15px;
       fill: currentColor;
+    }
+
+    /* ---------- ANIMACIONES DE SCROLL Y ENTRADA ---------- */
+    .scroll-anim {
+      opacity: 0;
+      transform: translateY(28px) scale(0.99);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .scroll-anim.is-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Efectos hover sutiles en tarjetas */
+    .hover-card {
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hover-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .hover-card img {
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hover-card:hover img {
+      transform: scale(1.02);
     }
 
     /* Tarjeta destacada principal (Hero) */
@@ -249,7 +304,7 @@
       margin-bottom: 24px;
     }
 
-    /* Grilla de 2 columnas (Últimas noticias) */
+    /* Grilla de 2 columnas */
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -342,7 +397,7 @@
       color: var(--text);
     }
 
-    /* ---------- SECCIÓN: MÁS DE APPLE NEWSROOM ---------- */
+    /* ---------- MÁS DE APPLE NEWSROOM ---------- */
     .more-news-list {
       border-top: 1px solid var(--border);
     }
@@ -359,6 +414,13 @@
       display: flex;
       align-items: center;
       gap: 24px;
+      border-radius: 16px;
+      padding: 8px;
+      transition: background 0.25s ease;
+    }
+
+    .more-news-item:hover {
+      background: rgba(0, 0, 0, 0.02);
     }
 
     .more-news-item .item-thumb {
@@ -378,6 +440,11 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .more-news-item:hover .item-thumb img {
+      transform: scale(1.05);
     }
 
     .more-news-item .item-content {
@@ -405,58 +472,156 @@
       color: var(--muted);
     }
 
+    /* ---------- VISTA DE RESULTADOS DE BÚSQUEDA ---------- */
+    #searchView {
+      display: none;
+      padding: 10px 0 60px;
+      animation: searchViewIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    body.searching #mainContent {
+      display: none;
+    }
+
+    body.searching #searchView {
+      display: block;
+    }
+
+    /* Efecto máquina de escribir (Typewriter) en cabecera */
+    .typewriter-box {
+      font-size: 24px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      min-height: 38px;
+    }
+
+    .typewriter-text {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.15em;
+      background-color: var(--accent-blue);
+      margin-left: 4px;
+      vertical-align: middle;
+      animation: blinkCursor 0.8s infinite;
+    }
+
+    .search-results-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .search-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 20px;
+      border-radius: 20px;
+      background: var(--card-bg);
+      opacity: 0;
+      transform: translateY(14px);
+      animation: resultPop 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .search-thumb {
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .search-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .search-info .headline {
+      font-size: 21px;
+      font-weight: 700;
+      line-height: 1.25;
+      margin: 6px 0;
+    }
+
+    mark {
+      background: rgba(0, 113, 227, 0.18);
+      color: var(--accent-blue);
+      font-weight: 700;
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 80px 20px;
+      animation: searchViewIn 0.5s ease;
+    }
+
+    .no-results h2 {
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .no-results p {
+      margin-top: 14px;
+      font-size: 18px;
+      color: var(--muted);
+    }
+
+    /* KEYFRAMES */
+    @keyframes navFadeDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes searchViewIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes resultPop {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blinkCursor {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
     /* ---------- RESPONSIVO ---------- */
     @media (max-width: 900px) {
-      .grid-3 {
-        grid-template-columns: 1fr;
-      }
-      .grid-2 {
-        grid-template-columns: 1fr;
-      }
-      .more-news-row {
-        grid-template-columns: 1fr;
-        gap: 28px;
-        padding: 24px 0;
-      }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .more-news-row { grid-template-columns: 1fr; gap: 28px; padding: 24px 0; }
     }
 
     @media (max-width: 860px) {
-      .global-nav {
-        display: none;
-      }
-      .newsroom-nav .nav-link {
-        display: none;
-      }
-      .hero-card {
-        grid-template-columns: 1fr;
-      }
-      .hero-info {
-        padding: 32px 24px;
-      }
-      .hero-info .headline {
-        font-size: 26px;
-      }
-      .section-heading {
-        font-size: 32px;
-      }
-      .sub-heading {
-        font-size: 26px;
-        margin: 48px 0 16px;
-      }
-      .more-news-item .item-thumb {
-        width: 96px;
-        height: 96px;
-        border-radius: 16px;
-      }
-      .more-news-item .headline {
-        font-size: 16px;
-      }
+      .global-nav { display: none; }
+      .newsroom-nav .nav-link { display: none; }
+      .hero-card { grid-template-columns: 1fr; }
+      .hero-info { padding: 32px 24px; }
+      .hero-info .headline { font-size: 26px; }
+      .section-heading { font-size: 32px; }
+      .sub-heading { font-size: 26px; margin: 48px 0 16px; }
+      .more-news-item .item-thumb { width: 96px; height: 96px; border-radius: 16px; }
+      .more-news-item .headline { font-size: 16px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Barra de navegación global de Apple -->
+  <!-- Barra global de Apple -->
   <nav class="global-nav">
     <ul class="global-nav-content">
       <li>
@@ -495,7 +660,7 @@
     </ul>
   </nav>
 
-  <!-- Sub-header de Newsroom -->
+  <!-- Sub-header Newsroom con animación de buscador -->
   <header class="newsroom-header">
     <div class="newsroom-header-wrap">
       <div class="newsroom-brand">Newsroom</div>
@@ -503,203 +668,388 @@
         <a href="#" class="nav-link">Servicios de Apple</a>
         <a href="#" class="nav-link">Apple Stories</a>
         <label class="search-pill">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6">
             <circle cx="6.5" cy="6.5" r="5"/>
             <line x1="10.5" y1="10.5" x2="14.5" y2="14.5"/>
           </svg>
-          <input type="text" placeholder="Buscar Newsroom" autocomplete="off">
+          <input id="searchInput" type="text" placeholder="Buscar Newsroom" autocomplete="off">
         </label>
       </nav>
     </div>
   </header>
 
-  <!-- Sección Principal: Últimas noticias -->
+  <!-- Contenedor Principal -->
   <main class="main-wrap">
-    <h1 class="section-heading">Últimas noticias</h1>
 
-    <!-- Tarjeta Destacada (Hero) -->
-    <article class="hero-card">
-      <div class="hero-media">
-        <img src="https://www.apple.com/newsroom/images/2026/09/get-ready-to-experience-iphone-18-pro-the-new-apple-watch-lineup-and-airpods-5/tile/Apple-iPhone-18-Pro-lineup-Apple-Watch-Series-12-Apple-Watch-Ultra-4-Airpods-5-lp.jpg.landing-big_2x.jpg" alt="iPhone 18 Pro, Apple Watch y AirPods">
+    <!-- Vista de Resultados del Buscador -->
+    <div id="searchView">
+      <div class="typewriter-box">
+        <span id="typewriterTarget"></span>
+        <span class="typewriter-cursor"></span>
       </div>
-      <div class="hero-info">
-        <div class="eyebrow">ACTUALIZACIÓN</div>
-        <h2 class="headline">Prepárate para los nuevos modelos de iPhone, Apple Watch y AirPods</h2>
-        <div class="meta-time">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 13H11V7h1.5v8z"/>
-          </svg>
-          <span>Hace 2 h 26 min</span>
-        </div>
-      </div>
-    </article>
+      <div id="searchResults" class="search-results-grid"></div>
+    </div>
 
-    <!-- Fila 1: Grilla de 2 columnas -->
-    <section class="grid-2">
-      <!-- Tarjeta Apple Watch Ultra 4 -->
-      <article class="card-2col">
-        <div class="card-thumb">
-          <img src="https://www.apple.com/newsroom/images/2026/09/apple-unveils-apple-watch-ultra-4/tile/Apple-Watch-Ultra-4-hero-260909-lp.jpg.landing-big_2x.jpg" alt="Apple Watch Ultra 4">
+    <!-- Contenido Normal de la Página -->
+    <div id="mainContent">
+      <h1 class="section-heading scroll-anim">Últimas noticias</h1>
+
+      <!-- Tarjeta Hero -->
+      <article class="hero-card hover-card scroll-anim">
+        <div class="hero-media">
+          <img src="https://www.apple.com/newsroom/images/2026/09/get-ready-to-experience-iphone-18-pro-the-new-apple-watch-lineup-and-airpods-5/tile/Apple-iPhone-18-Pro-lineup-Apple-Watch-Series-12-Apple-Watch-Ultra-4-Airpods-5-lp.jpg.landing-big_2x.jpg" alt="iPhone 18 Pro, Apple Watch y AirPods">
         </div>
-        <div class="card-body">
-          <div class="eyebrow">COMUNICADO DE PRENSA</div>
-          <h2 class="headline">Apple presenta el Apple Watch Ultra 4</h2>
+        <div class="hero-info">
+          <div class="eyebrow">ACTUALIZACIÓN</div>
+          <h2 class="headline">Prepárate para los nuevos modelos de iPhone, Apple Watch y AirPods</h2>
           <div class="meta-time">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 13H11V7h1.5v8z"/>
-            </svg>
-            <span>Hace 2 días</span>
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 13H11V7h1.5v8z"/></svg>
+            <span>Hace 2 h 26 min</span>
           </div>
         </div>
       </article>
 
-      <!-- Tarjeta iPhone 18 Pro -->
-      <article class="card-2col">
-        <div class="card-thumb">
-          <img src="https://www.apple.com/newsroom/images/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/geo/Apple-iPhone-18-Pro-2up-Geo-260909-lp.jpg.landing-big_2x.jpg" alt="iPhone 18 Pro y iPhone 18 Pro Max">
-        </div>
-        <div class="card-body">
-          <div class="eyebrow">COMUNICADO DE PRENSA</div>
-          <h2 class="headline">Apple presenta el iPhone 18 Pro y el iPhone 18 Pro Max</h2>
-          <div class="meta-time">
-            <span>09 de septiembre de 2026</span>
+      <!-- Fila 1: 2 columnas -->
+      <section class="grid-2">
+        <article class="card-2col hover-card scroll-anim">
+          <div class="card-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/09/apple-unveils-apple-watch-ultra-4/tile/Apple-Watch-Ultra-4-hero-260909-lp.jpg.landing-big_2x.jpg" alt="Apple Watch Ultra 4">
           </div>
-        </div>
-      </article>
-    </section>
-
-    <!-- Fila 2: Grilla de 3 columnas -->
-    <section class="grid-3">
-      <!-- Tarjeta iPhone Duo -->
-      <article class="card-3col">
-        <div class="card-thumb">
-          <img src="https://www.apple.com/newsroom/images/2026/09/apple-unveils-iphone-duo/tile/Apple-iPhone-Duo-opening-iPhone-Duo-260909-lp.jpg.landing-regular_2x.jpg" alt="iPhone Duo">
-        </div>
-        <div class="card-body">
-          <div class="eyebrow">COMUNICADO DE PRENSA</div>
-          <h2 class="headline">Apple presenta el iPhone Duo</h2>
-          <div class="meta-time">
-            <span>09 de septiembre de 2026</span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Tarjeta AirPods 5 -->
-      <article class="card-3col">
-        <div class="card-thumb">
-          <img src="https://www.apple.com/newsroom/images/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/tile/Apple-AirPods-5-hero-260909-lp.jpg.landing-regular_2x.jpg" alt="AirPods 5">
-        </div>
-        <div class="card-body">
-          <div class="eyebrow">COMUNICADO DE PRENSA</div>
-          <h2 class="headline">Apple presenta los AirPods 5 con la mejor Cancelación Activa de Ruido en un diseño abierto</h2>
-          <div class="meta-time">
-            <span>09 de septiembre de 2026</span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Tarjeta Apple Watch Series 12 -->
-      <article class="card-3col">
-        <div class="card-thumb">
-          <img src="https://www.apple.com/newsroom/images/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/tile/Apple-Watch-Series-12-2up-260909-lp.jpg.landing-regular_2x.jpg" alt="Apple Watch Series 12">
-        </div>
-        <div class="card-body">
-          <div class="eyebrow">COMUNICADO DE PRENSA</div>
-          <h2 class="headline">Presentamos el Apple Watch Series 12</h2>
-          <div class="meta-time">
-            <span>09 de septiembre de 2026</span>
-          </div>
-        </div>
-      </article>
-    </section>
-
-    <!-- Fila 3: Más de Apple Newsroom -->
-    <h2 class="sub-heading">Más de Apple Newsroom</h2>
-    <section class="more-news-list">
-
-      <!-- Fila 1 de Más de Apple Newsroom -->
-      <div class="more-news-row">
-        <!-- Pusheen's Place -->
-        <article class="more-news-item">
-          <div class="item-thumb">
-            <img src="https://www.apple.com/newsroom/images/2026/09/the-internets-favorite-cat-comes-to-apple-arcade-with-pusheens-place/tile/Apple-Arcade-Pusheens-Place-key-art-lp.jpg.landing-1by1_2x.jpg" alt="Pusheen's Place">
-          </div>
-          <div class="item-content">
-            <div class="eyebrow">ACTUALIZACIÓN</div>
-            <h3 class="headline">La gata más querida de internet llega a Apple Arcade con Pusheen's Place</h3>
-            <div class="date">08 de septiembre de 2026</div>
-          </div>
-        </article>
-
-        <!-- Sneaky Sasquatch -->
-        <article class="more-news-item">
-          <div class="item-thumb">
-            <img src="https://www.apple.com/newsroom/images/2026/08/exciting-updates-for-sneaky-sasquatch-come-to-apple-arcade/tile/Apple-Arcade-Sneaky-Sasquatch-lp.jpg.landing-1by1_2x.jpg" alt="Sneaky Sasquatch">
-          </div>
-          <div class="item-content">
-            <div class="eyebrow">ACTUALIZACIÓN</div>
-            <h3 class="headline">Sneaky Sasquatch suma increíbles novedades para Apple Arcade</h3>
-            <div class="date">27 de agosto de 2026</div>
-          </div>
-        </article>
-      </div>
-
-      <!-- Fila 2 de Más de Apple Newsroom -->
-      <div class="more-news-row">
-        <!-- Mac Studio -->
-        <article class="more-news-item">
-          <div class="item-thumb">
-            <img src="https://www.apple.com/newsroom/images/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/tile/Apple-Mac-Studio-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Mac Studio">
-          </div>
-          <div class="item-content">
+          <div class="card-body">
             <div class="eyebrow">COMUNICADO DE PRENSA</div>
-            <h3 class="headline">Apple presenta la nueva Mac Studio con chip M5 Max y M5 Ultra</h3>
-            <div class="date">25 de agosto de 2026</div>
+            <h2 class="headline">Apple presenta el Apple Watch Ultra 4</h2>
+            <div class="meta-time">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.5 13H11V7h1.5v8z"/></svg>
+              <span>Hace 2 días</span>
+            </div>
           </div>
         </article>
 
-        <!-- Mac mini -->
-        <article class="more-news-item">
-          <div class="item-thumb">
-            <img src="https://www.apple.com/newsroom/images/2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/tile/Apple-Mac-mini-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Mac mini">
+        <article class="card-2col hover-card scroll-anim">
+          <div class="card-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/geo/Apple-iPhone-18-Pro-2up-Geo-260909-lp.jpg.landing-big_2x.jpg" alt="iPhone 18 Pro y iPhone 18 Pro Max">
           </div>
-          <div class="item-content">
+          <div class="card-body">
             <div class="eyebrow">COMUNICADO DE PRENSA</div>
-            <h3 class="headline">Apple presenta una Mac mini más poderosa, con los nuevos chips M6 y M5 Pro</h3>
-            <div class="date">25 de agosto de 2026</div>
+            <h2 class="headline">Apple presenta el iPhone 18 Pro y el iPhone 18 Pro Max</h2>
+            <div class="meta-time">
+              <span>09 de septiembre de 2026</span>
+            </div>
           </div>
         </article>
-      </div>
+      </section>
 
-      <!-- Fila 3 de Más de Apple Newsroom -->
-      <div class="more-news-row">
-        <!-- Chips M6 y M5 Ultra -->
-        <article class="more-news-item">
-          <div class="item-thumb">
-            <img src="https://www.apple.com/newsroom/images/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/tile/Apple-M6-and-M5-Ultra-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Chips M6 y M5 Ultra">
+      <!-- Fila 2: 3 columnas -->
+      <section class="grid-3">
+        <article class="card-3col hover-card scroll-anim">
+          <div class="card-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/09/apple-unveils-iphone-duo/tile/Apple-iPhone-Duo-opening-iPhone-Duo-260909-lp.jpg.landing-regular_2x.jpg" alt="iPhone Duo">
           </div>
-          <div class="item-content">
+          <div class="card-body">
             <div class="eyebrow">COMUNICADO DE PRENSA</div>
-            <h3 class="headline">Apple presenta los chips M6 y M5 Ultra</h3>
-            <div class="date">25 de agosto de 2026</div>
+            <h2 class="headline">Apple presenta el iPhone Duo</h2>
+            <div class="meta-time">
+              <span>09 de septiembre de 2026</span>
+            </div>
           </div>
         </article>
 
-        <!-- Unión Europea -->
-        <article class="more-news-item">
-          <div class="item-thumb">
-            <img src="https://www.apple.com/newsroom/images/2026/08/apple-announces-changes-for-apps-in-the-european-union/tile/Apple-App-Store-compliance-hero-lp.jpg.landing-1by1_2x.jpg" alt="Cambios Unión Europea">
+        <article class="card-3col hover-card scroll-anim">
+          <div class="card-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/09/apple-introduces-airpods-5-with-best-in-class-open-ear-active-noise-cancellation/tile/Apple-AirPods-5-hero-260909-lp.jpg.landing-regular_2x.jpg" alt="AirPods 5">
           </div>
-          <div class="item-content">
-            <div class="eyebrow">ACTUALIZACIÓN</div>
-            <h3 class="headline">Apple anuncia cambios para apps en la Unión Europea</h3>
-            <div class="date">18 de agosto de 2026</div>
+          <div class="card-body">
+            <div class="eyebrow">COMUNICADO DE PRENSA</div>
+            <h2 class="headline">Apple presenta los AirPods 5 con la mejor Cancelación Activa de Ruido en un diseño abierto</h2>
+            <div class="meta-time">
+              <span>09 de septiembre de 2026</span>
+            </div>
           </div>
         </article>
-      </div>
 
-    </section>
+        <article class="card-3col hover-card scroll-anim">
+          <div class="card-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/tile/Apple-Watch-Series-12-2up-260909-lp.jpg.landing-regular_2x.jpg" alt="Apple Watch Series 12">
+          </div>
+          <div class="card-body">
+            <div class="eyebrow">COMUNICADO DE PRENSA</div>
+            <h2 class="headline">Presentamos el Apple Watch Series 12</h2>
+            <div class="meta-time">
+              <span>09 de septiembre de 2026</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- Fila 3: Más de Apple Newsroom -->
+      <h2 class="sub-heading scroll-anim">Más de Apple Newsroom</h2>
+      <section class="more-news-list">
+
+        <div class="more-news-row scroll-anim">
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/09/the-internets-favorite-cat-comes-to-apple-arcade-with-pusheens-place/tile/Apple-Arcade-Pusheens-Place-key-art-lp.jpg.landing-1by1_2x.jpg" alt="Pusheen's Place">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">ACTUALIZACIÓN</div>
+              <h3 class="headline">La gata más querida de internet llega a Apple Arcade con Pusheen's Place</h3>
+              <div class="date">08 de septiembre de 2026</div>
+            </div>
+          </article>
+
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/08/exciting-updates-for-sneaky-sasquatch-come-to-apple-arcade/tile/Apple-Arcade-Sneaky-Sasquatch-lp.jpg.landing-1by1_2x.jpg" alt="Sneaky Sasquatch">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">ACTUALIZACIÓN</div>
+              <h3 class="headline">Sneaky Sasquatch suma increíbles novedades para Apple Arcade</h3>
+              <div class="date">27 de agosto de 2026</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="more-news-row scroll-anim">
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/tile/Apple-Mac-Studio-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Mac Studio">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">COMUNICADO DE PRENSA</div>
+              <h3 class="headline">Apple presenta la nueva Mac Studio con chip M5 Max y M5 Ultra</h3>
+              <div class="date">25 de agosto de 2026</div>
+            </div>
+          </article>
+
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/tile/Apple-Mac-mini-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Mac mini">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">COMUNICADO DE PRENSA</div>
+              <h3 class="headline">Apple presenta una Mac mini más poderosa, con los nuevos chips M6 y M5 Pro</h3>
+              <div class="date">25 de agosto de 2026</div>
+            </div>
+          </article>
+        </div>
+
+        <div class="more-news-row scroll-anim">
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/tile/Apple-M6-and-M5-Ultra-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Chips M6 y M5 Ultra">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">COMUNICADO DE PRENSA</div>
+              <h3 class="headline">Apple presenta los chips M6 y M5 Ultra</h3>
+              <div class="date">25 de agosto de 2026</div>
+            </div>
+          </article>
+
+          <article class="more-news-item">
+            <div class="item-thumb">
+              <img src="https://www.apple.com/newsroom/images/2026/08/apple-announces-changes-for-apps-in-the-european-union/tile/Apple-App-Store-compliance-hero-lp.jpg.landing-1by1_2x.jpg" alt="Cambios Unión Europea">
+            </div>
+            <div class="item-content">
+              <div class="eyebrow">ACTUALIZACIÓN</div>
+              <h3 class="headline">Apple anuncia cambios para apps en la Unión Europea</h3>
+              <div class="date">18 de agosto de 2026</div>
+            </div>
+          </article>
+        </div>
+
+      </section>
+    </div>
+
   </main>
 
+  <script>
+    /* =========================================================
+       1. ANIMACIONES DE ENTRADA, SCROLL Y RECARGA EN SECCIÓN
+       ========================================================= */
+    const animatedElements = document.querySelectorAll('.scroll-anim');
+
+    // Revelar inmediatamente los elementos que ya están en el campo visual (al recargar la página)
+    function checkInitialVisibility() {
+      const windowHeight = window.innerHeight;
+      animatedElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < windowHeight * 0.95) {
+          el.classList.add('is-visible');
+        }
+      });
+    }
+
+    // Observador para animar al bajar (scroll)
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.1
+    });
+
+    animatedElements.forEach(el => scrollObserver.observe(el));
+
+    // Ejecución inmediata al cargar el DOM y tras el render inicial
+    window.addEventListener('DOMContentLoaded', checkInitialVisibility);
+    window.addEventListener('load', checkInitialVisibility);
+    setTimeout(checkInitialVisibility, 50);
+
+    /* =========================================================
+       2. ANIMACIÓN DE ESCRITOR EN EL PLACEHOLDER DEL BUSCADOR
+       ========================================================= */
+    const input = document.getElementById('searchInput');
+    const placeholders = ['Buscar Newsroom', 'Buscar iPhone 18 Pro', 'Buscar Apple Watch', 'Buscar AirPods 5', 'Buscar Mac Studio'];
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let isFocused = false;
+
+    function typePlaceholderLoop() {
+      if (isFocused || input.value.length > 0) return;
+
+      const currentPhrase = placeholders[phraseIndex];
+
+      if (isDeleting) {
+        input.setAttribute('placeholder', currentPhrase.substring(0, charIndex - 1));
+        charIndex--;
+      } else {
+        input.setAttribute('placeholder', currentPhrase.substring(0, charIndex + 1));
+        charIndex++;
+      }
+
+      let speed = isDeleting ? 40 : 80;
+
+      if (!isDeleting && charIndex === currentPhrase.length) {
+        speed = 1800; // Pausa al completar la palabra
+        isDeleting = true;
+      } else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % placeholders.length;
+        speed = 400;
+      }
+
+      setTimeout(typePlaceholderLoop, speed);
+    }
+
+    input.addEventListener('focus', () => {
+      isFocused = true;
+      input.setAttribute('placeholder', 'Buscar Newsroom');
+    });
+
+    input.addEventListener('blur', () => {
+      isFocused = false;
+      if (!input.value) {
+        charIndex = 0;
+        isDeleting = false;
+        setTimeout(typePlaceholderLoop, 500);
+      }
+    });
+
+    setTimeout(typePlaceholderLoop, 1000);
+
+    /* =========================================================
+       3. RECOLECCIÓN DE NOTICIAS PARA EL BUSCADOR
+       ========================================================= */
+    const newsData = [];
+    document.querySelectorAll('#mainContent article').forEach(art => {
+      const h = art.querySelector('.headline');
+      if (!h) return;
+      const eyebrow = art.querySelector('.eyebrow');
+      const date = art.querySelector('.meta-time span, .date');
+      const img = art.querySelector('img');
+
+      newsData.push({
+        title: h.textContent.trim(),
+        eyebrow: eyebrow ? eyebrow.textContent.trim() : '',
+        date: date ? date.textContent.trim() : '',
+        thumbSrc: img ? img.src : ''
+      });
+    });
+
+    /* =========================================================
+       4. ANIMACIÓN DE ESCRITOR Y RENDERIZADO DE BÚSQUEDA
+       ========================================================= */
+    const searchView = document.getElementById('searchView');
+    const searchResults = document.getElementById('searchResults');
+    const typewriterTarget = document.getElementById('typewriterTarget');
+    let typewriterTimer = null;
+
+    function typewriterEffect(element, text, speed = 25) {
+      clearInterval(typewriterTimer);
+      element.innerHTML = '';
+      let i = 0;
+      typewriterTimer = setInterval(() => {
+        if (i < text.length) {
+          element.innerHTML += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(typewriterTimer);
+        }
+      }, speed);
+    }
+
+    function highlightText(text, query) {
+      const safe = text.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+      const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      return safe.replace(regex, '<mark>$1</mark>');
+    }
+
+    function executeSearch() {
+      const q = input.value.trim();
+
+      if (!q) {
+        document.body.classList.remove('searching');
+        clearInterval(typewriterTimer);
+        typewriterTarget.innerHTML = '';
+        searchResults.innerHTML = '';
+        return;
+      }
+
+      document.body.classList.add('searching');
+
+      const matches = newsData.filter(item => 
+        item.title.toLowerCase().includes(q.toLowerCase()) || 
+        item.eyebrow.toLowerCase().includes(q.toLowerCase())
+      );
+
+      if (matches.length > 0) {
+        const titleText = `${matches.length} ${matches.length === 1 ? 'resultado para' : 'resultados para'} “${q}”`;
+        typewriterEffect(typewriterTarget, titleText, 20);
+
+        searchResults.innerHTML = matches.map((item, idx) => `
+          <article class="search-item" style="animation-delay: ${idx * 0.08}s">
+            ${item.thumbSrc ? `<div class="search-thumb"><img src="${item.thumbSrc}" alt=""></div>` : ''}
+            <div class="search-info">
+              ${item.eyebrow ? `<div class="eyebrow">${item.eyebrow}</div>` : ''}
+              <h3 class="headline">${highlightText(item.title, q)}</h3>
+              ${item.date ? `<div class="date" style="font-size:13px; color:var(--muted);">${item.date}</div>` : ''}
+            </div>
+          </article>
+        `).join('');
+      } else {
+        typewriterEffect(typewriterTarget, `0 resultados para “${q}”`, 20);
+        searchResults.innerHTML = `
+          <div class="no-results">
+            <h2>No se encontraron resultados</h2>
+            <p>Intenta con otros términos o palabras clave.</p>
+          </div>
+        `;
+      }
+    }
+
+    input.addEventListener('input', executeSearch);
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        input.value = '';
+        executeSearch();
+        input.blur();
+      }
+    });
+  </script>
 </body>
 </html>
