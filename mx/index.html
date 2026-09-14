@@ -11,6 +11,7 @@
       --text: #1d1d1f;
       --muted: #86868b;
       --nav-dark: #161617;
+      --border: rgba(0, 0, 0, 0.08);
       --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -92,7 +93,7 @@
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: saturate(180%) blur(20px);
       -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      border-bottom: 1px solid var(--border);
       position: sticky;
       top: 44px;
       z-index: 999;
@@ -163,7 +164,7 @@
     .main-wrap {
       max-width: 1024px;
       margin: 0 auto;
-      padding: 48px 20px 80px;
+      padding: 48px 20px 100px;
     }
 
     .section-heading {
@@ -174,7 +175,15 @@
       color: var(--text);
     }
 
-    /* Estilos compartidos de tarjeta */
+    .sub-heading {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 64px 0 20px;
+      color: var(--text);
+    }
+
+    /* Estilos compartidos de texto */
     .eyebrow {
       font-size: 12px;
       font-weight: 600;
@@ -240,7 +249,7 @@
       margin-bottom: 24px;
     }
 
-    /* Grilla de 2 columnas */
+    /* Grilla de 2 columnas (Últimas noticias) */
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -290,6 +299,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
+      margin-bottom: 40px;
     }
 
     .card-3col {
@@ -332,6 +342,69 @@
       color: var(--text);
     }
 
+    /* ---------- SECCIÓN: MÁS DE APPLE NEWSROOM ---------- */
+    .more-news-list {
+      border-top: 1px solid var(--border);
+    }
+
+    .more-news-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      padding: 36px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .more-news-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .more-news-item .item-thumb {
+      width: 120px;
+      height: 120px;
+      flex-shrink: 0;
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .more-news-item .item-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .more-news-item .item-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .more-news-item .eyebrow {
+      margin-bottom: 6px;
+      font-size: 11px;
+    }
+
+    .more-news-item .headline {
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.22;
+      letter-spacing: -0.012em;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .more-news-item .date {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
     /* ---------- RESPONSIVO ---------- */
     @media (max-width: 900px) {
       .grid-3 {
@@ -339,6 +412,11 @@
       }
       .grid-2 {
         grid-template-columns: 1fr;
+      }
+      .more-news-row {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 24px 0;
       }
     }
 
@@ -360,6 +438,18 @@
       }
       .section-heading {
         font-size: 32px;
+      }
+      .sub-heading {
+        font-size: 26px;
+        margin: 48px 0 16px;
+      }
+      .more-news-item .item-thumb {
+        width: 96px;
+        height: 96px;
+        border-radius: 16px;
+      }
+      .more-news-item .headline {
+        font-size: 16px;
       }
     }
   </style>
@@ -523,6 +613,92 @@
       </article>
     </section>
 
+    <!-- Fila 3: Más de Apple Newsroom -->
+    <h2 class="sub-heading">Más de Apple Newsroom</h2>
+    <section class="more-news-list">
+
+      <!-- Fila 1 de Más de Apple Newsroom -->
+      <div class="more-news-row">
+        <!-- Pusheen's Place -->
+        <article class="more-news-item">
+          <div class="item-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/09/the-internets-favorite-cat-comes-to-apple-arcade-with-pusheens-place/tile/Apple-Arcade-Pusheens-Place-key-art-lp.jpg.landing-1by1_2x.jpg" alt="Pusheen's Place">
+          </div>
+          <div class="item-content">
+            <div class="eyebrow">ACTUALIZACIÓN</div>
+            <h3 class="headline">La gata más querida de internet llega a Apple Arcade con Pusheen's Place</h3>
+            <div class="date">08 de septiembre de 2026</div>
+          </div>
+        </article>
+
+        <!-- Sneaky Sasquatch -->
+        <article class="more-news-item">
+          <div class="item-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/08/exciting-updates-for-sneaky-sasquatch-come-to-apple-arcade/tile/Apple-Arcade-Sneaky-Sasquatch-lp.jpg.landing-1by1_2x.jpg" alt="Sneaky Sasquatch">
+          </div>
+          <div class="item-content">
+            <div class="eyebrow">ACTUALIZACIÓN</div>
+            <h3 class="headline">Sneaky Sasquatch suma increíbles novedades para Apple Arcade</h3>
+            <div class="date">27 de agosto de 2026</div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Fila 2 de Más de Apple Newsroom -->
+      <div class="more-news-row">
+        <!-- Mac Studio -->
+        <article class="more-news-item">
+          <div class="item-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/tile/Apple-Mac-Studio-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Mac Studio">
+          </div>
+          <div class="item-content">
+            <div class="eyebrow">COMUNICADO DE PRENSA</div>
+            <h3 class="headline">Apple presenta la nueva Mac Studio con chip M5 Max y M5 Ultra</h3>
+            <div class="date">25 de agosto de 2026</div>
+          </div>
+        </article>
+
+        <!-- Mac mini -->
+        <article class="more-news-item">
+          <div class="item-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/08/apple-unveils-a-more-powerful-mac-mini-featuring-the-all-new-m6-and-m5-pro/tile/Apple-Mac-mini-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Mac mini">
+          </div>
+          <div class="item-content">
+            <div class="eyebrow">COMUNICADO DE PRENSA</div>
+            <h3 class="headline">Apple presenta una Mac mini más poderosa, con los nuevos chips M6 y M5 Pro</h3>
+            <div class="date">25 de agosto de 2026</div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Fila 3 de Más de Apple Newsroom -->
+      <div class="more-news-row">
+        <!-- Chips M6 y M5 Ultra -->
+        <article class="more-news-item">
+          <div class="item-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/08/apple-introduces-m6-and-m5-ultra-for-a-big-leap-in-performance-and-ai-compute/tile/Apple-M6-and-M5-Ultra-hero-260825-lp.jpg.landing-1by1_2x.jpg" alt="Chips M6 y M5 Ultra">
+          </div>
+          <div class="item-content">
+            <div class="eyebrow">COMUNICADO DE PRENSA</div>
+            <h3 class="headline">Apple presenta los chips M6 y M5 Ultra</h3>
+            <div class="date">25 de agosto de 2026</div>
+          </div>
+        </article>
+
+        <!-- Unión Europea -->
+        <article class="more-news-item">
+          <div class="item-thumb">
+            <img src="https://www.apple.com/newsroom/images/2026/08/apple-announces-changes-for-apps-in-the-european-union/tile/Apple-App-Store-compliance-hero-lp.jpg.landing-1by1_2x.jpg" alt="Cambios Unión Europea">
+          </div>
+          <div class="item-content">
+            <div class="eyebrow">ACTUALIZACIÓN</div>
+            <h3 class="headline">Apple anuncia cambios para apps en la Unión Europea</h3>
+            <div class="date">18 de agosto de 2026</div>
+          </div>
+        </article>
+      </div>
+
+    </section>
   </main>
 
 </body>
